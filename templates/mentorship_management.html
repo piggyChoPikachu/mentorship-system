@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentorship Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body { background: #f8f9fa; padding: 20px 0; }
+
+    .mentorship-container { max-width: 1150px; margin: 0 auto; }
+
+    .header-card, .section-card {
+      background: white;
+      padding: 24px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+      margin-bottom: 24px;
+    }
+
+    .header-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .btn-nav {
+      border-radius: 6px;
+      padding: 10px 18px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      cursor: pointer;
+      background: #fff;
+      color: #4d5ed1;
+      border: 1px solid #d8ddff;
+    }
+
+    .section-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .section-count { font-size: 14px; color: #666; }
+
+    .message-bar { padding: 14px 16px; border-radius: 6px; margin-bottom: 20px; display: none; }
+    .message-bar.show    { display: block; }
+    .message-bar.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .message-bar.error   { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+    /* ── cards ── */
+    .mentorship-list { display: flex; flex-direction: column; gap: 14px; }
+
+    .mentorship-item {
+      border: 1px solid #e8e8e8;
+      border-radius: 10px;
+      padding: 18px;
+      display: grid;
+      grid-template-columns: minmax(0,1.7fr) minmax(0,1fr) auto;
+      gap: 18px;
+      align-items: center;
+      background: #fafafa;
+    }
+
+    .mentorship-item.past {
+      background: #f3f3f3;
+      border-color: #e0e0e0;
+      opacity: .88;
+    }
+
+    .person-cell { display: flex; gap: 14px; align-items: flex-start; }
+
+    .user-avatar {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: #667eea; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; flex-shrink: 0;
+    }
+
+    .user-name { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+
+    .mini-badge {
+      display: inline-block;
+      padding: 4px 10px; border-radius: 999px;
+      font-size: 12px; font-weight: 700;
+      margin-right: 8px; margin-top: 4px;
+    }
+
+    .identity-badge   { background: #eef4ff; color: #4860d3; }
+    .topic-badge      { background: #e7f7ee; color: #21875d; }
+    .type-badge       { background: #f3ecff; color: #6f42c1; }
+    .status-active    { background: #d4edda; color: #155724; }
+    .status-completed { background: #cce5ff; color: #004085; }
+    .status-cancelled { background: #f8d7da; color: #721c24; }
+
+    .mentorship-lines { color: #444; font-size: 14px; }
+    .mentorship-lines div { margin-bottom: 4px; }
+
+    /* ── action buttons ── */
+    .actions-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-end;
+    }
+
+    /* Message button with optional unread badge */
+    .btn-msg-wrap { position: relative; display: inline-block; }
+
+    .btn-msg {
+      background: #667eea; color: #fff;
+      border: none; border-radius: 6px;
+      padding: 8px 14px; font-weight: 600; font-size: 13px;
+      cursor: pointer; white-space: nowrap;
+    }
+
+    .btn-msg:hover { background: #5567d4; }
+
+    /* red dot badge */
+    .unread-badge {
+      position: absolute;
+      top: -6px; right: -6px;
+      background: #dc3545; color: #fff;
+      border-radius: 999px;
+      font-size: 11px; font-weight: 700;
+      min-width: 18px; height: 18px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 4px;
+      border: 2px solid #fff;
+    }
+
+    .btn-complete {
+      background: #0d6efd; color: #fff;
+      border: none; border-radius: 6px;
+      padding: 8px 14px; font-weight: 600; font-size: 13px;
+      cursor: pointer; white-space: nowrap;
+    }
+
+    .btn-cancel {
+      background: #fff; color: #dc3545;
+      border: 1px solid #dc3545; border-radius: 6px;
+      padding: 8px 14px; font-weight: 600; font-size: 13px;
+      cursor: pointer; white-space: nowrap;
+    }
+
+    .btn-complete:hover { background: #0b5ed7; }
+    .btn-cancel:hover   { background: #fff0f1; }
+
+    .empty-state, .loading {
+      padding: 20px; text-align: center; color: #666;
+      border: 1px dashed #ddd; border-radius: 8px; background: #fcfcfc;
+    }
+
+    /* ── message thread ── */
+    .msg-thread {
+      max-height: 340px; overflow-y: auto;
+      border: 1px solid #e8e8e8; border-radius: 8px;
+      padding: 12px; margin-bottom: 14px; background: #fafafa;
+    }
+
+    .msg-bubble { margin-bottom: 12px; display: flex; flex-direction: column; }
+    .msg-bubble.mine   { align-items: flex-end; }
+    .msg-bubble.theirs { align-items: flex-start; }
+
+    .bubble-body {
+      max-width: 75%;
+      padding: 10px 14px; border-radius: 16px;
+      font-size: 14px; line-height: 1.45;
+    }
+
+    .msg-bubble.mine   .bubble-body { background: #667eea; color: #fff; border-bottom-right-radius: 4px; }
+    .msg-bubble.theirs .bubble-body { background: #e9ecef; color: #333; border-bottom-left-radius: 4px; }
+
+    .bubble-meta { font-size: 11px; color: #999; margin-top: 4px; }
+
+    @media (max-width: 900px) {
+      .mentorship-item { grid-template-columns: 1fr; }
+      .actions-cell { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
+      .header-card  { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+<div class="mentorship-container">
+
+  <!-- header -->
+  <div class="header-card">
+    <div>
+      <h1>🤝 Mentorship Management</h1>
+      <div style="color:#666; margin-top:6px;">View and manage your mentorship relationships.</div>
+      <div id="current-user-info" style="margin-top:10px; font-weight:600; color:#444;">
+        Logged in as: Loading…
+      </div>
+    </div>
+    <div class="header-actions">
+      <a href="/matching"            class="btn-nav">Matching</a>
+      <a href="/requests-management" class="btn-nav">Requests</a>
+      <a href="/published-profile"   class="btn-nav">Published Profile</a>
+      <a href="/preference"          class="btn-nav">Preferences</a>
+      <a href="/logout"              class="btn-nav">Logout</a>
+    </div>
+  </div>
+
+  <div id="message-bar" class="message-bar"></div>
+
+  <!-- active mentorships -->
+  <div class="section-card">
+    <div class="section-title-row">
+      <h2 style="margin:0; font-size:22px;">Active Mentorships</h2>
+      <div class="section-count" id="active-count"></div>
+    </div>
+    <div id="loading-active" class="loading" style="display:none;">⏳ Loading…</div>
+    <div id="active-container" class="mentorship-list"></div>
+  </div>
+
+  <!-- past mentorships -->
+  <div class="section-card">
+    <div class="section-title-row">
+      <h2 style="margin:0; font-size:22px; color:#555;">Past Mentorships</h2>
+      <div class="section-count" id="past-count"></div>
+    </div>
+    <div id="past-container" class="mentorship-list"></div>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════
+     CONFIRM MODAL (complete / cancel)
+══════════════════════════════════════ -->
+<div class="modal fade" id="confirmModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirm-modal-title">Confirm</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p id="confirm-modal-desc" style="margin-bottom:14px;"></p>
+        <label style="font-weight:600; font-size:14px; display:block; margin-bottom:6px;">
+          Reason <span style="color:#999; font-weight:400;">(optional)</span>
+        </label>
+        <textarea id="confirm-reason" rows="3"
+          style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px;
+                 font-size:14px; resize:vertical;"
+          placeholder="Add a short note…"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Go back</button>
+        <button type="button" class="btn btn-primary" id="confirm-modal-btn">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     MESSAGE MODAL
+══════════════════════════════════════ -->
+<div class="modal fade" id="msgModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="msg-modal-title">Messages</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" style="display:flex; flex-direction:column; gap:0; padding-bottom:8px;">
+        <div id="msg-thread" class="msg-thread">
+          <div class="loading">Loading messages…</div>
+        </div>
+        <div style="display:flex; gap:10px; align-items:flex-end;">
+          <textarea id="msg-input" rows="2"
+            style="flex:1; padding:10px; border:1px solid #ddd; border-radius:6px;
+                   font-size:14px; resize:none;"
+            placeholder="Type a message… (Enter to send, Shift+Enter for new line)"></textarea>
+          <button id="msg-send-btn"
+            style="background:#667eea; color:#fff; border:none; border-radius:6px;
+                   padding:10px 18px; font-weight:600; font-size:14px;
+                   cursor:pointer; white-space:nowrap; height:42px;"
+            onclick="sendMessage()">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // ── globals ──────────────────────────────────────────────
+  let confirmModal           = null;
+  let msgModal               = null;
+  let currentMsgMentorshipId = null;
+  let currentUserId          = null;
+  let pendingAction          = null; // { mentorshipId, newStatus }
+
+  // ── tiny helpers ─────────────────────────────────────────
+  function showBar(text, type) {
+    const el = document.getElementById('message-bar');
+    el.textContent = text;
+    el.className   = `message-bar show ${type}`;
+    setTimeout(() => { el.className = 'message-bar'; }, 4500);
+  }
+
+  function getInitials(a, b) {
+    return `${(a||'').trim().charAt(0)||'?'}${(b||'').trim().charAt(0)||''}`.toUpperCase();
+  }
+
+  function cap(role) {
+    return (role||'').replaceAll('_','-').replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  function statusClass(s) {
+    return s === 'active' ? 'status-active' : s === 'completed' ? 'status-completed' : 'status-cancelled';
+  }
+
+  function fmtDate(d) {
+    if (!d) return 'Not specified';
+    try { return new Date(d).toLocaleDateString('en-GB', {year:'numeric',month:'short',day:'numeric'}); }
+    catch { return d; }
+  }
+
+  function escHtml(str) {
+    return (str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                    .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+  }
+
+  // ── render a single mentorship card ──────────────────────
+  function renderCard(row, isActive) {
+    const name = `${row.other_first_name||''} ${row.other_last_name||''}`.trim() || 'Unnamed User';
+    const nameSafe = name.replace(/'/g,"\\'");
+
+    // unread badge — only shown when count > 0
+    const unread = row.unread_count || 0;
+    const badgeHtml = unread > 0
+      ? `<span class="unread-badge">${unread > 99 ? '99+' : unread}</span>`
+      : '';
+
+    const actionButtons = isActive ? `
+      <div class="btn-msg-wrap">
+        <button class="btn-msg" onclick="openMessageModal(${row.mentorship_id}, '${nameSafe}')">
+          💬 Message
+        </button>
+        ${badgeHtml}
+      </div>
+      <button class="btn-complete" onclick="openConfirm(${row.mentorship_id}, 'completed')">✅ Complete</button>
+      <button class="btn-cancel"   onclick="openConfirm(${row.mentorship_id}, 'cancelled')">✖ Cancel</button>
+    ` : `
+      <div class="btn-msg-wrap">
+        <button class="btn-msg" onclick="openMessageModal(${row.mentorship_id}, '${nameSafe}')">
+          💬 Message
+        </button>
+        ${badgeHtml}
+      </div>
+    `;
+    // past cards can still read messages (read-only thread is fine),
+    // but no complete/cancel buttons since it's already ended.
+
+    return `
+      <div class="mentorship-item${isActive ? '' : ' past'}" id="card-${row.mentorship_id}">
+        <div class="person-cell">
+          <a href="/published-profile?person_id=${row.other_person_id}" style="text-decoration:none;">
+            <div class="user-avatar">${getInitials(row.other_first_name, row.other_last_name)}</div>
+          </a>
+          <div>
+            <div class="user-name">
+              <a href="/published-profile?person_id=${row.other_person_id}"
+                 style="text-decoration:none; color:inherit;">${escHtml(name)}</a>
+            </div>
+            <span class="mini-badge identity-badge">${cap(row.other_identity_role)}</span>
+            <span class="mini-badge topic-badge">${escHtml(row.topic_name)}</span>
+            <span class="mini-badge type-badge">${cap(row.mentorship_type)}</span>
+            <span class="mini-badge ${statusClass(row.status)}">${cap(row.status)}</span>
+          </div>
+        </div>
+
+        <div class="mentorship-lines">
+          <div><strong>Topic:</strong> ${escHtml(row.topic_name)}</div>
+          <div><strong>Type:</strong> ${cap(row.mentorship_type)}</div>
+          <div><strong>Start:</strong> ${fmtDate(row.start_date)}</div>
+          ${row.end_date ? `<div><strong>End:</strong> ${fmtDate(row.end_date)}</div>` : ''}
+          <div><strong>Email:</strong> ${escHtml(row.other_email || 'Not specified')}</div>
+          ${row.end_reason ? `<div><strong>Reason:</strong> <em>${escHtml(row.end_reason)}</em></div>` : ''}
+        </div>
+
+        <div class="actions-cell">${actionButtons}</div>
+      </div>`;
+  }
+
+  // ── render both sections from API response ────────────────
+  function renderPage(data) {
+    const user = data.current_user || {};
+    currentUserId = user.id;
+    const name = `${user.first_name||''} ${user.last_name||''}`.trim() || user.username || 'Current User';
+    document.getElementById('current-user-info').textContent =
+      `Logged in as: ${name} (${cap(user.identity_role||'')})`;
+
+    const active = data.mentorships || [];
+    document.getElementById('active-count').textContent =
+      `${active.length} item${active.length !== 1 ? 's' : ''}`;
+    document.getElementById('active-container').innerHTML = active.length
+      ? active.map(r => renderCard(r, true)).join('')
+      : '<div class="empty-state">No active mentorships yet.</div>';
+
+    const past = data.past_mentorships || [];
+    document.getElementById('past-count').textContent =
+      `${past.length} item${past.length !== 1 ? 's' : ''}`;
+    document.getElementById('past-container').innerHTML = past.length
+      ? past.map(r => renderCard(r, false)).join('')
+      : '<div class="empty-state">No past mentorships yet.</div>';
+  }
+
+  // ── load from API ─────────────────────────────────────────
+  async function loadMentorships() {
+    document.getElementById('loading-active').style.display = 'block';
+    try {
+      const res  = await fetch('/api/mentorship-management/overview');
+      const data = await res.json();
+      document.getElementById('loading-active').style.display = 'none';
+      if (!res.ok) { showBar(data.error || 'Error loading mentorships', 'error'); return; }
+      renderPage(data);
+    } catch (e) {
+      document.getElementById('loading-active').style.display = 'none';
+      showBar('Error loading mentorships', 'error');
+    }
+  }
+
+
+  // ══════════════════════════════════════
+  //  CONFIRM MODAL
+  // ══════════════════════════════════════
+  function openConfirm(mentorshipId, newStatus) {
+    pendingAction = { mentorshipId, newStatus };
+    const isComplete = newStatus === 'completed';
+
+    document.getElementById('confirm-modal-title').textContent =
+      isComplete ? '✅ Mark as Completed' : '✖ Cancel Mentorship';
+    document.getElementById('confirm-modal-desc').textContent =
+      isComplete
+        ? 'Are you sure you want to mark this mentorship as completed? This cannot be undone.'
+        : 'Are you sure you want to cancel this mentorship? This cannot be undone.';
+    document.getElementById('confirm-reason').value = '';
+
+    const btn = document.getElementById('confirm-modal-btn');
+    btn.textContent = isComplete ? 'Mark Completed' : 'Cancel Mentorship';
+    btn.className   = isComplete ? 'btn btn-primary' : 'btn btn-danger';
+
+    confirmModal.show();
+  }
+
+  async function executeStatusChange() {
+    if (!pendingAction) return;
+    const { mentorshipId, newStatus } = pendingAction;
+    const reason = document.getElementById('confirm-reason').value.trim();
+    confirmModal.hide();
+
+    try {
+      const res  = await fetch(`/api/mentorship-management/${mentorshipId}/status`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus, reason })
+      });
+      const data = await res.json();
+      if (!res.ok) { showBar(data.error || 'Error updating mentorship', 'error'); return; }
+      showBar(data.message || 'Mentorship updated.', 'success');
+      await loadMentorships();
+    } catch (e) {
+      showBar('Error updating mentorship', 'error');
+    }
+  }
+
+
+  // ══════════════════════════════════════
+  //  MESSAGE MODAL
+  // ══════════════════════════════════════
+  async function openMessageModal(mentorshipId, otherName) {
+    currentMsgMentorshipId = mentorshipId;
+    document.getElementById('msg-modal-title').textContent = `💬 Messages with ${otherName}`;
+    document.getElementById('msg-input').value = '';
+    msgModal.show();
+    await loadMessages();
+  }
+
+  async function loadMessages() {
+    const thread = document.getElementById('msg-thread');
+    thread.innerHTML = '<div class="loading">Loading messages…</div>';
+    try {
+      const res  = await fetch(`/api/mentorship-management/${currentMsgMentorshipId}/messages`);
+      const data = await res.json();
+      if (!res.ok) {
+        thread.innerHTML = `<div style="color:#dc3545;padding:10px;">${data.error||'Could not load messages.'}</div>`;
+        return;
+      }
+      renderThread(data.messages || []);
+
+      // after opening the modal, reload cards silently so badges disappear
+      reloadBadgesOnly();
+
+    } catch (e) {
+      thread.innerHTML = '<div style="color:#dc3545;padding:10px;">Error loading messages.</div>';
+    }
+  }
+
+  function renderThread(messages) {
+    const thread = document.getElementById('msg-thread');
+    if (!messages.length) {
+      thread.innerHTML = '<div style="text-align:center;color:#999;padding:20px;">No messages yet. Say hello! 👋</div>';
+      return;
+    }
+    thread.innerHTML = messages.map(m => {
+      const isMine = m.sender_id === currentUserId;
+      const time   = new Date(m.sent_at).toLocaleString('en-GB', {
+        day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'
+      });
+      return `
+        <div class="msg-bubble ${isMine ? 'mine' : 'theirs'}">
+          <div class="bubble-body">${escHtml(m.body)}</div>
+          <div class="bubble-meta">${isMine ? 'You' : escHtml(m.sender_name)} · ${time}</div>
+        </div>`;
+    }).join('');
+    thread.scrollTop = thread.scrollHeight;
+  }
+
+  async function sendMessage() {
+    const input = document.getElementById('msg-input');
+    const body  = input.value.trim();
+    if (!body) return;
+
+    // disable send briefly to avoid double-send
+    const btn = document.getElementById('msg-send-btn');
+    btn.disabled = true;
+
+    try {
+      const res  = await fetch(`/api/mentorship-management/${currentMsgMentorshipId}/messages`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ body })
+      });
+      const data = await res.json();
+      if (!res.ok) { showBar(data.error || 'Error sending message', 'error'); return; }
+      input.value = '';
+      await loadMessages(); // refresh thread (keeps mark-as-read side-effect too)
+    } catch (e) {
+      showBar('Error sending message', 'error');
+    } finally {
+      btn.disabled = false;
+      input.focus();
+    }
+  }
+
+  // silently refresh just the unread badges without re-rendering everything
+  async function reloadBadgesOnly() {
+    try {
+      const res  = await fetch('/api/mentorship-management/overview');
+      const data = await res.json();
+      if (!res.ok) return;
+      // update badges on existing cards without a full re-render
+      const allRows = [...(data.mentorships||[]), ...(data.past_mentorships||[])];
+      allRows.forEach(row => {
+        const card = document.getElementById(`card-${row.mentorship_id}`);
+        if (!card) return;
+        // find the btn-msg-wrap inside this card and update badge
+        const wrap = card.querySelector('.btn-msg-wrap');
+        if (!wrap) return;
+        let badge = wrap.querySelector('.unread-badge');
+        const unread = row.unread_count || 0;
+        if (unread > 0) {
+          if (!badge) {
+            badge = document.createElement('span');
+            badge.className = 'unread-badge';
+            wrap.appendChild(badge);
+          }
+          badge.textContent = unread > 99 ? '99+' : unread;
+        } else {
+          if (badge) badge.remove();
+        }
+      });
+    } catch (e) { /* silent fail — badges are cosmetic */ }
+  }
+
+  // Enter to send, Shift+Enter for new line
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('msg-input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+  });
+
+
+  // ══════════════════════════════════════
+  //  INIT
+  // ══════════════════════════════════════
+  document.addEventListener('DOMContentLoaded', async () => {
+    confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+    msgModal     = new bootstrap.Modal(document.getElementById('msgModal'));
+    document.getElementById('confirm-modal-btn').addEventListener('click', executeStatusChange);
+    await loadMentorships();
+  });
+</script>
+</body>
+</html>

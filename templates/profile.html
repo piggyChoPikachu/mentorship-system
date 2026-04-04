@@ -1,1047 +1,838 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - Mentorship System</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <style>
-        body {
-            background-color: #f5f5f5;
-            color: #333;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        .profile-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .profile-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            border-bottom: 2px solid #e0e0e0;
-            background: white;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-
-        .profile-header h1 {
-            margin: 0;
-            font-size: 28px;
-            color: #333;
-        }
-
-        .container-card {
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .container-header {
-            background: #f8f9fa;
-            padding: 15px 20px;
-            border-bottom: 1px solid #ddd;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .container-header h2 {
-            margin: 0;
-            font-size: 20px;
-            color: #333;
-        }
-
-        .container-body {
-            padding: 20px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        @media (max-width: 600px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group label {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #333;
-        }
-
-        .form-control {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: #1976d2;
-            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
-        }
-
-        .form-value {
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 4px;
-            color: #555;
-            margin: 0;
-        }
-
-        .form-text {
-            font-size: 12px;
-            color: #999;
-            margin-top: 4px;
-        }
-
-        .empty-field {
-            color: #999;
-            font-style: italic;
-        }
-
-        .items-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .item-card {
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            overflow: hidden;
-        }
-
-        .item-header {
-            background: #f8f9fa;
-            padding: 12px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .item-header h3 {
-            margin: 0;
-            font-size: 16px;
-            color: #333;
-        }
-
-        .item-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .item-body {
-            padding: 15px;
-        }
-
-        .item-body p {
-            margin: 8px 0;
-            color: #555;
-            font-size: 14px;
-        }
-
-        .item-body strong {
-            color: #333;
-        }
-
-        .job-description {
-            margin-top: 10px !important;
-            line-height: 1.5;
-            color: #666;
-        }
-
-        .tags-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .tag-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #e3f2fd;
-            border: 1px solid #90caf9;
-            border-radius: 20px;
-            padding: 8px 12px;
-            font-size: 14px;
-        }
-
-        .tag-name {
-            color: #1976d2;
-            font-weight: 500;
-        }
-
-        .tag-remove {
-            background: none;
-            border: none;
-            color: #1976d2;
-            cursor: pointer;
-            font-size: 16px;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            transition: color 0.3s;
-        }
-
-        .tag-remove:hover {
-            color: #d32f2f;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #999;
-        }
-
-        .empty-state p {
-            margin: 10px 0;
-            font-size: 16px;
-        }
-
-        .btn-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .badge-info {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-
-        .badge-warning {
-            background: #fff3e0;
-            color: #f57c00;
-        }
-    </style>
+  <style>
+    body { background: #f8f9fa; padding: 20px 0; }
+    .profile-container { max-width: 900px; margin: 0 auto; }
+    .header-card { background: white; padding: 30px; border-radius: 8px; margin-bottom: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1); display:flex; justify-content:space-between; align-items:center; }
+    .header-card h1 { margin: 0; }
+    .header-actions { display:flex; gap:10px; }
+    .container-card { background:white; padding:25px; border-radius:8px; margin-bottom:25px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+    .container-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;
+      border-bottom:2px solid #f0f0f0; padding-bottom:15px; }
+    .container-header h2 { margin: 0; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+    .form-group { margin-bottom:15px; }
+    .form-group label { font-weight:600; color:#333; margin-bottom:8px; display:block; }
+    .form-group input, .form-group select, .form-group textarea { width:100%; padding:10px; border:1px solid #ddd; border-radius:4px; font-size:14px; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+    .form-group.read-only input, .form-group.read-only select { background:#f8f9fa; cursor:not-allowed; }
+    .items-list { display:flex; flex-direction:column; gap:15px; }
+    .item-card { border:1px solid #e0e0e0; border-radius:6px; padding:15px; background:#fafafa; }
+    .item-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+    .item-header h3 { margin: 0; font-size: 16px; }
+    .item-body p { margin: 8px 0; color: #555; font-size: 14px; }
+    .item-body strong { color: #333; }
+    .item-actions { display:flex; gap:8px; }
+    .empty-state { text-align:center; padding:40px 20px; color:#999; }
+    .message { padding:15px; border-radius:4px; margin-bottom:20px; display:none; }
+    .message.show { display:block; }
+    .message.success { background:#d4edda; color:#155724; border:1px solid #c3e6cb; }
+    .message.error { background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; }
+    .btn { padding:8px 16px; border-radius:4px; border:none; cursor:pointer; font-weight:600; transition:all 0.2s; }
+    .btn-primary { background: #667eea; color: white; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { background: #5568d3; color: white; text-decoration: none; }
+    .btn-secondary { background: #6c757d; color: white; text-decoration: none; display: inline-block; }
+    .btn-secondary:hover { background: #5a6268; color: white; text-decoration: none; }
+    .btn-outline-danger { border: 1px solid #dc3545; color: #dc3545; text-decoration: none; display: inline-block; }
+    .btn-outline-danger:hover { background: #dc3545; color: white; text-decoration: none; }
+    .btn-sm { padding: 5px 10px; font-size: 12px; }
+    .btn-success { background: #28a745; color: white; }
+    .btn-success:hover { background: #218838; }
+    .btn-danger { background: #dc3545; color: white; }
+    .btn-danger:hover { background: #c82333; }
+    .btn-warning { background: #ffc107; color: #333; }
+    .btn-warning:hover { background: #e0a800; color: #333; }
+    .publish-section { margin-top: 25px; padding: 20px; background: #f0f1fa; border-radius: 6px; border-left: 4px solid #667eea; }
+    .publish-section h3 { margin-bottom: 15px; color: #333; font-size: 16px; }
+    .publish-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    @media (max-width:768px){ .form-row{grid-template-columns:1fr;} .header-card{flex-direction:column; gap:15px;} }
+  </style>
 </head>
 <body>
+<div class="profile-container">
 
-    <!-- Main Content -->
-    <div class="profile-container">
-        <!-- Page Header -->
-        <div class="profile-header">
-            <h1>My Profile</h1>
-            <div class="btn-actions">
-                {% if mode == "view" %}
-                    <a href="/profile?mode=edit" class="btn btn-primary">
-                        ✏️ Edit Profile
-                    </a>
-                {% else %}
-                    <a href="/profile" class="btn btn-secondary">
-                        ✖️ Cancel
-                    </a>
-                    <button type="submit" form="profile-form" class="btn btn-success">
-                        💾 Save Changes
-                    </button>
-                {% endif %}
-            </div>
-        </div>
+  <div class="header-card">
+    <h1>👤 My Profile</h1>
+	<div class="header-actions">
+	  {% if mode == "view" %}
+		<a href="/profile?mode=edit" class="btn btn-primary">✏️ Edit Profile</a>
+		<a href="/preference" class="btn btn-info">👥 Preferences</a>
+	  {% else %}
+		<a href="/profile" class="btn btn-secondary">❌ Cancel</a>
+		<button type="button" class="btn btn-primary" onclick="savePersonal()">💾 Save Changes</button>
+	  {% endif %}
+	  <a href="/logout" class="btn btn-outline-danger">Logout</a>
+	</div>
+  </div>
 
-        <!-- Main Profile Form -->
-        <form id="profile-form">
-            
-            <!-- ============================================ -->
-            <!-- CONTAINER 1: PERSON INFO                    -->
-            <!-- ============================================ -->
-            <div class="container-card">
-                <div class="container-header">
-                    <h2>Personal Information</h2>
-                </div>
-                
-                <div class="container-body">
-                    <div class="form-grid">
-                        
-                        <!-- Username (Read-only) -->
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            {% if mode == "view" %}
-                                <p class="form-value">{{ profile.username }}</p>
-                            {% else %}
-                                <input type="text" id="username" name="username" value="{{ profile.username }}" class="form-control" readonly disabled>
-                                <small class="form-text">Username cannot be changed</small>
-                            {% endif %}
-                        </div>
+  <div id="message" class="message"></div>
 
-                        <!-- Email -->
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            {% if mode == "view" %}
-                                <p class="form-value">{{ profile.email }}</p>
-                            {% else %}
-                                <input type="email" id="email" name="email" value="{{ profile.email }}" class="form-control" readonly disabled>
-                                <small class="form-text">Email cannot be changed</small>
-                            {% endif %}
-                        </div>
-
-                        <!-- First Name -->
-                        <div class="form-group">
-                            <label for="first_name">First Name</label>
-                            {% if mode == "view" %}
-                                <p class="form-value">
-                                    {% if profile.first_name %}
-                                        {{ profile.first_name }}
-                                    {% else %}
-                                        <span class="empty-field">Not provided</span>
-                                    {% endif %}
-                                </p>
-                            {% else %}
-                                <input type="text" id="first_name" name="first_name" value="{{ profile.first_name or '' }}" class="form-control" required>
-                            {% endif %}
-                        </div>
-
-                        <!-- Last Name -->
-                        <div class="form-group">
-                            <label for="last_name">Last Name</label>
-                            {% if mode == "view" %}
-                                <p class="form-value">
-                                    {% if profile.last_name %}
-                                        {{ profile.last_name }}
-                                    {% else %}
-                                        <span class="empty-field">Not provided</span>
-                                    {% endif %}
-                                </p>
-                            {% else %}
-                                <input type="text" id="last_name" name="last_name" value="{{ profile.last_name or '' }}" class="form-control" required>
-                            {% endif %}
-                        </div>
-
-                        <!-- Phone Number -->
-                        <div class="form-group">
-                            <label for="phone_number">Phone Number</label>
-                            {% if mode == "view" %}
-                                <p class="form-value">{{ profile.phone_number or "Not provided" }}</p>
-                            {% else %}
-                                <input type="tel" id="phone_number" name="phone_number" value="{{ profile.phone_number or '' }}" class="form-control" placeholder="+1 (555) 123-4567">
-                            {% endif %}
-                        </div>
-
-                        <!-- Address -->
-                        <div class="form-group">
-                            <label for="address">Address</label>
-                            {% if mode == "view" %}
-                                <p class="form-value">{{ profile.address or "Not provided" }}</p>
-                            {% else %}
-                                <input type="text" id="address" name="address" value="{{ profile.address or '' }}" class="form-control" placeholder="123 Main St, City, Country">
-                            {% endif %}
-                        </div>
-
-                        <!-- Home Country -->
-                        <div class="form-group">
-                            <label for="home_country">Home Country</label>
-                            {% if mode == "view" %}
-                                <p class="form-value">{{ profile.home_country_name or "Not provided" }}</p>
-                            {% else %}
-                                <select id="home_country" name="home_country" class="form-control">
-                                    <option value="">-- Select Country --</option>
-                                    {% for country in countries %}
-                                        <option value="{{ country.code }}" {% if country.code == profile.home_country_code %}selected{% endif %}>
-                                            {{ country.name }}
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                            {% endif %}
-                        </div>
-
-                        <!-- Role (Read-only) -->
-                        <div class="form-group">
-                            <label for="role">Role</label>
-                            <p class="form-value">
-                                {% if profile.role == "student" %}
-                                    <span class="badge badge-info">Student</span>
-                                {% else %}
-                                    <span class="badge badge-warning">Alumni</span>
-                                {% endif %}
-                            </p>
-                        </div>
-
-                        <!-- LinkedIn Profile (Alumni only) -->
-                        {% if profile.role == "alumni" %}
-                            <div class="form-group">
-                                <label for="linkedin_profile">LinkedIn Profile</label>
-                                {% if mode == "view" %}
-                                    <p class="form-value">
-                                        {% if profile.linkedin_profile %}
-                                            <a href="{{ profile.linkedin_profile }}" target="_blank">{{ profile.linkedin_profile }}</a>
-                                        {% else %}
-                                            Not provided
-                                        {% endif %}
-                                    </p>
-                                {% else %}
-                                    <input type="url" id="linkedin_profile" name="linkedin_profile" value="{{ profile.linkedin_profile or '' }}" class="form-control" placeholder="https://linkedin.com/in/yourprofile">
-                                {% endif %}
-                            </div>
-                        {% endif %}
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- ============================================ -->
-            <!-- CONTAINER 2: EDUCATION                      -->
-            <!-- ============================================ -->
-            <div class="container-card">
-                <div class="container-header">
-                    <h2>Education</h2>
-                    {% if mode == "edit" %}
-                        <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#educationModal">
-                            ➕ Add Education
-                        </button>
-                    {% endif %}
-                </div>
-
-                <div class="container-body">
-                    {% if profile.education | length > 0 %}
-                        <div class="items-list">
-                            {% for edu in profile.education %}
-                                <div class="item-card">
-                                    <div class="item-header">
-                                        <h3>{{ edu.study_level }} - {{ edu.programme }}</h3>
-                                        {% if mode == "edit" %}
-                                            <div class="item-actions">
-                                                <button type="button" class="btn btn-sm btn-danger" onclick="deleteEducation({{ edu.id }})">Delete</button>
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                    
-                                    <div class="item-body">
-                                        <p><strong>Faculty:</strong> {{ edu.faculty }}</p>
-                                        <p><strong>Institute:</strong> {{ edu.institute }}</p>
-                                        <p><strong>Department:</strong> {{ edu.department }}</p>
-                                        <p><strong>Start Date:</strong> {{ edu.start_date or 'Ongoing' }}</p>
-                                        <p><strong>End Date:</strong> {{ edu.end_date or 'Ongoing' }}</p>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="empty-state">
-                            <p>📚 No education added yet.</p>
-                            {% if mode == "edit" %}
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#educationModal">Add Education</button>
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-
-            <!-- ============================================ -->
-            <!-- CONTAINER 3: CAREER (Alumni Only)           -->
-            <!-- ============================================ -->
-            {% if profile.role == "alumni" %}
-                <div class="container-card">
-                    <div class="container-header">
-                        <h2>Career History</h2>
-                        {% if mode == "edit" %}
-                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#careerModal">
-                                ➕ Add Career
-                            </button>
-                        {% endif %}
-                    </div>
-
-                    <div class="container-body">
-                        {% if profile.career | length > 0 %}
-                            <div class="items-list">
-                                {% for car in profile.career %}
-                                    <div class="item-card">
-                                        <div class="item-header">
-                                            <h3>{{ car.job_title }}</h3>
-                                            {% if mode == "edit" %}
-                                                <div class="item-actions">
-                                                    <button type="button" class="btn btn-sm btn-danger" onclick="deleteCareer({{ car.id }})">Delete</button>
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                        
-                                        <div class="item-body">
-                                            <p><strong>Company:</strong> {{ car.company_name }}</p>
-                                            <p><strong>Location:</strong> {{ car.city }}, {{ car.work_country_name }}</p>
-                                            <p><strong>Start Date:</strong> {{ car.start_date }}</p>
-                                            <p><strong>End Date:</strong> {{ car.end_date or 'Present' }}</p>
-                                            {% if car.job_description %}
-                                                <p><strong>Description:</strong></p>
-                                                <p class="job-description">{{ car.job_description }}</p>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            <div class="empty-state">
-                                <p>💼 No career history added yet.</p>
-                                {% if mode == "edit" %}
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#careerModal">Add Career</button>
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-            {% endif %}
-
-            <!-- ============================================ -->
-            <!-- CONTAINER 4: SKILLS                         -->
-            <!-- ============================================ -->
-            <div class="container-card">
-                <div class="container-header">
-                    <h2>Skills</h2>
-                    {% if mode == "edit" %}
-                        <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#skillModal">
-                            ➕ Add Skill
-                        </button>
-                    {% endif %}
-                </div>
-
-                <div class="container-body">
-                    {% if profile.skills | length > 0 %}
-                        <div class="tags-list">
-                            {% for skill in profile.skills %}
-                                <div class="tag-item">
-                                    <span class="tag-name">{{ skill.name }}</span>
-                                    {% if mode == "edit" %}
-                                        <button type="button" class="tag-remove" onclick="deleteSkill({{ skill.id }})">
-                                            ✕
-                                        </button>
-                                    {% endif %}
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="empty-state">
-                            <p>🎯 No skills added yet.</p>
-                            {% if mode == "edit" %}
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#skillModal">Add Skill</button>
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-
-            <!-- ============================================ -->
-            <!-- CONTAINER 5: INTERESTS                      -->
-            <!-- ============================================ -->
-            <div class="container-card">
-                <div class="container-header">
-                    <h2>Interests</h2>
-                    {% if mode == "edit" %}
-                        <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#interestModal">
-                            ➕ Add Interest
-                        </button>
-                    {% endif %}
-                </div>
-
-                <div class="container-body">
-                    {% if profile.interests | length > 0 %}
-                        <div class="tags-list">
-                            {% for interest in profile.interests %}
-                                <div class="tag-item">
-                                    <span class="tag-name">{{ interest.name }}</span>
-                                    {% if mode == "edit" %}
-                                        <button type="button" class="tag-remove" onclick="deleteInterest({{ interest.id }})">
-                                            ✕
-                                        </button>
-                                    {% endif %}
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="empty-state">
-                            <p>⭐ No interests added yet.</p>
-                            {% if mode == "edit" %}
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#interestModal">Add Interest</button>
-                            {% endif %}
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-
-            <!-- ============================================ -->
-            <!-- CONTAINER 6: EXPERTISE (Alumni Only)        -->
-            <!-- ============================================ -->
-            {% if profile.role == "alumni" %}
-                <div class="container-card">
-                    <div class="container-header">
-                        <h2>Expertise</h2>
-                        {% if mode == "edit" %}
-                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#expertiseModal">
-                                ➕ Add Expertise
-                            </button>
-                        {% endif %}
-                    </div>
-
-                    <div class="container-body">
-                        {% if profile.expertise | length > 0 %}
-                            <div class="tags-list">
-                                {% for exp in profile.expertise %}
-                                    <div class="tag-item">
-                                        <span class="tag-name">{{ exp.name }}</span>
-                                        {% if mode == "edit" %}
-                                            <button type="button" class="tag-remove" onclick="deleteExpertise({{ exp.id }})">
-                                                ✕
-                                            </button>
-                                        {% endif %}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            <div class="empty-state">
-                                <p>🏆 No expertise added yet.</p>
-                                {% if mode == "edit" %}
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#expertiseModal">Add Expertise</button>
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-            {% endif %}
-
-        </form>
+  <!-- PERSONAL INFO -->
+  <div class="container-card">
+    <div class="container-header">
+      <h2>👤 Personal Information</h2>
     </div>
 
-    <!-- ============================================ -->
-    <!-- MODALS (All forms)                          -->
-    <!-- ============================================ -->
-
-    <!-- Education Modal -->
-    <div class="modal fade" id="educationModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Education</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="education-form">
-                        <div class="mb-3">
-                            <label for="study_level_id" class="form-label">Study Level *</label>
-                            <select id="study_level_id" name="study_level_id" class="form-control" required>
-                                <option value="">-- Select Study Level --</option>
-                                <option value="1">Bachelor</option>
-                                <option value="2">Master</option>
-                                <option value="3">PhD</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="programme_id" class="form-label">Programme *</label>
-                            <select id="programme_id" name="programme_id" class="form-control" required>
-                                <option value="">-- Select Programme --</option>
-                                <option value="1">Computer Science</option>
-                                <option value="2">Engineering</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="edu_start_date" class="form-label">Start Date</label>
-                            <input type="date" id="edu_start_date" name="start_date" class="form-control">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="edu_end_date" class="form-label">End Date</label>
-                            <input type="date" id="edu_end_date" name="end_date" class="form-control">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" form="education-form" class="btn btn-success">Add Education</button>
-                </div>
-            </div>
+    {% if mode == "view" %}
+      <div class="form-row">
+        <div class="form-group read-only">
+          <label>Username</label>
+          <input type="text" value="{{ user.username }}" readonly>
         </div>
-    </div>
-
-    <!-- Career Modal (Alumni only) -->
-    <div class="modal fade" id="careerModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Career</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="career-form">
-                        <div class="mb-3">
-                            <label for="job_title" class="form-label">Job Title *</label>
-                            <input type="text" id="job_title" name="job_title" class="form-control" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="company_name" class="form-label">Company Name *</label>
-                            <input type="text" id="company_name" name="company_name" class="form-control" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="city" class="form-label">City</label>
-                            <input type="text" id="city" name="city" class="form-control">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="work_country_code" class="form-label">Country</label>
-                            <select id="work_country_code" name="work_country_code" class="form-control">
-                                <option value="">-- Select Country --</option>
-                                <option value="US">United States</option>
-                                <option value="CA">Canada</option>
-                                <option value="UK">United Kingdom</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="car_start_date" class="form-label">Start Date *</label>
-                            <input type="date" id="car_start_date" name="start_date" class="form-control" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="car_end_date" class="form-label">End Date</label>
-                            <input type="date" id="car_end_date" name="end_date" class="form-control">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="job_description" class="form-label">Job Description</label>
-                            <textarea id="job_description" name="job_description" class="form-control" rows="3"></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" form="career-form" class="btn btn-success">Add Career</button>
-                </div>
-            </div>
+        <div class="form-group read-only">
+          <label>Email</label>
+          <input type="text" value="{{ user.email }}" readonly>
         </div>
-    </div>
+      </div>
 
-    <!-- Skill Modal -->
-    <div class="modal fade" id="skillModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Skill</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="skill-form">
-                        <div class="mb-3">
-                            <label for="skill_name" class="form-label">Skill Name *</label>
-                            <input type="text" id="skill_name" name="skill_name" class="form-control" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" form="skill-form" class="btn btn-success">Add Skill</button>
-                </div>
-            </div>
+      <div class="form-row">
+        <div class="form-group read-only">
+          <label>First Name</label>
+          <input type="text" value="{{ user.first_name or '' }}" readonly>
         </div>
-    </div>
-
-    <!-- Interest Modal -->
-    <div class="modal fade" id="interestModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Interest</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="interest-form">
-                        <div class="mb-3">
-                            <label for="interest_name" class="form-label">Interest Name *</label>
-                            <input type="text" id="interest_name" name="interest_name" class="form-control" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" form="interest-form" class="btn btn-success">Add Interest</button>
-                </div>
-            </div>
+        <div class="form-group read-only">
+          <label>Last Name</label>
+          <input type="text" value="{{ user.last_name or '' }}" readonly>
         </div>
-    </div>
+      </div>
 
-    <!-- Expertise Modal (Alumni only) -->
-    <div class="modal fade" id="expertiseModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Expertise</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="expertise-form">
-                        <div class="mb-3">
-                            <label for="expertise_name" class="form-label">Expertise Name *</label>
-                            <input type="text" id="expertise_name" name="expertise_name" class="form-control" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" form="expertise-form" class="btn btn-success">Add Expertise</button>
-                </div>
-            </div>
+      <div class="form-row">
+        <div class="form-group read-only">
+          <label>Phone Number</label>
+          <input type="text" value="{{ user.phone_number or '' }}" readonly>
         </div>
+        <div class="form-group read-only">
+          <label>Address</label>
+          <input type="text" value="{{ user.address or '' }}" readonly>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group read-only">
+          <label>Country</label>
+          <input type="text" id="country_display" value="" readonly>
+        </div>
+        <div class="form-group read-only">
+          <label>Role</label>
+          <input type="text" value="{{ user.identity_role | upper }}" readonly>
+        </div>
+      </div>
+
+      <!-- PUBLISH SECTION (VIEW MODE ONLY) -->
+      <div class="publish-section">
+        <h3>📤 Publish Profile</h3>
+        <p style="margin-bottom: 15px; color: #555; font-size: 14px;">
+          Make your profile visible to others for mentorship matching
+        </p>
+        <div class="publish-actions">
+          <button type="button" class="btn btn-primary" onclick="publishProfile()">
+            📤 Publish Profile
+          </button>
+          <a href="/published-profile" class="btn btn-secondary">
+            👁️ View Published Profile
+          </a>
+        </div>
+      </div>
+
+    {% else %}
+      <div class="form-row">
+        <div class="form-group read-only">
+          <label>Username</label>
+          <input type="text" value="{{ user.username }}" readonly>
+        </div>
+        <div class="form-group read-only">
+          <label>Email</label>
+          <input type="text" value="{{ user.email }}" readonly>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" id="first_name" value="{{ user.first_name or '' }}">
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" id="last_name" value="{{ user.last_name or '' }}">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="text" id="phone_number" value="{{ user.phone_number or '' }}" placeholder="e.g., +1-234-567-8900">
+        </div>
+        <div class="form-group">
+          <label>Address</label>
+          <input type="text" id="address" value="{{ user.address or '' }}" placeholder="e.g., 123 Main St">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Country</label>
+          <select id="home_country">
+            <option value="">-- Select Country --</option>
+          </select>
+        </div>
+        <div class="form-group read-only">
+          <label>Role</label>
+          <input type="text" value="{{ user.identity_role | upper }}" readonly>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="container-card">
+    <div class="container-header">
+      <h2>📚 Education</h2>
+      {% if mode == "edit" %}
+        <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#educationModal" onclick="openAddEducationModal()">
+          ➕ Add Education
+        </button>
+      {% endif %}
     </div>
+    <div id="education-list"></div>
+  </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- CAREER (alumni only) -->
+  {% if user.identity_role == "alumni" %}
+  <div class="container-card">
+    <div class="container-header">
+      <h2>💼 Career History</h2>
+      {% if mode == "edit" %}
+        <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#careerModal" onclick="openAddCareerModal()">
+          ➕ Add Career
+        </button>
+      {% endif %}
+    </div>
+    <div id="career-list"></div>
+  </div>
+  {% endif %}
 
-    <!-- Profile Form Submission -->
-    <script>
-        // Handle profile form submission
-        document.getElementById('profile-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = {
-                first_name: document.getElementById('first_name').value,
-                last_name: document.getElementById('last_name').value,
-                phone_number: document.getElementById('phone_number').value || null,
-                address: document.getElementById('address').value || null,
-                home_country: document.getElementById('home_country').value || null
-            };
-            
-            fetch('/profile/personal/save', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.ok) {
-                    alert('Profile saved successfully!');
-                    window.location.href = '/profile';
-                } else {
-                    alert('Error: ' + data.error);
-                }
-            })
-            .catch(err => {
-                alert('Error: ' + err);
-            });
+</div>
+
+<!-- MODAL: EDUCATION -->
+<div class="modal fade" id="educationModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="educationModalTitle">Add Education</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="education_id" value="">
+        
+        <div class="form-group">
+          <label>Study Level</label>
+          <select id="study_level_id">
+            <option value="">-- Select --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Programme</label>
+          <select id="programme_id">
+            <option value="">-- Select --</option>
+          </select>
+        </div>
+
+        <!-- Display Faculty and Institute -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>Faculty (Read-only)</label>
+            <input type="text" id="programme_faculty" readonly style="background: #f8f9fa;">
+          </div>
+          <div class="form-group">
+            <label>Institute (Read-only)</label>
+            <input type="text" id="programme_institute" readonly style="background: #f8f9fa;">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Start Date</label>
+            <input type="date" id="edu_start_date">
+          </div>
+          <div class="form-group">
+            <label>End Date (Optional)</label>
+            <input type="date" id="edu_end_date">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="educationSubmitBtn" onclick="addEducation()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: CAREER -->
+<div class="modal fade" id="careerModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="careerModalTitle">Add Career</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="career_id" value="">
+        
+        <div class="form-group">
+          <label>Job Title</label>
+          <input type="text" id="job_title">
+        </div>
+
+        <div class="form-group">
+          <label>Company Name</label>
+          <input type="text" id="company_name">
+        </div>
+
+        <div class="form-group">
+          <label>Country</label>
+          <select id="career_country">
+            <option value="">-- Select --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Start Date</label>
+          <input type="date" id="car_start_date">
+        </div>
+
+        <div class="form-group">
+          <label>End Date (Optional)</label>
+          <input type="date" id="car_end_date">
+        </div>
+
+        <div class="form-group">
+          <label>Description (Optional)</label>
+          <textarea id="job_description" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="careerSubmitBtn" onclick="addCareer()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const mode = "{{ mode }}";
+  const homeCountryCode = "{{ user.home_country or '' }}";
+
+  let currentEditingEducationId = null;
+  let currentEditingCareerCode = null;
+
+  function showMessage(text, type) {
+    const msg = document.getElementById('message');
+    msg.textContent = text;
+    msg.className = `message show ${type}`;
+    setTimeout(() => { msg.className = 'message'; }, 3000);
+  }
+
+  async function publishProfile() {
+    try {
+      const res = await fetch('/api/profile/publish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        showMessage('✅ ' + data.message, 'success');
+      } else {
+        showMessage('❌ ' + (data.error || 'Error publishing profile'), 'error');
+      }
+    } catch (error) {
+      showMessage('❌ Error: ' + error.message, 'error');
+    }
+  }
+
+  async function displayCountryName() {
+    const countryCode = "{{ user.home_country or '' }}";
+    const countryDisplay = document.getElementById('country_display');
+    
+    if (!countryDisplay) {
+      return;
+    }
+    
+    if (!countryCode) {
+      countryDisplay.value = '';
+      return;
+    }
+    
+    try {
+      const res = await fetch('/api/countries');
+      const data = await res.json();
+      
+      const country = data.countries.find(c => c.code === countryCode);
+      if (country) {
+        countryDisplay.value = country.name;
+      } else {
+        countryDisplay.value = countryCode;
+      }
+    } catch (error) {
+      console.error('Error loading country:', error);
+      countryDisplay.value = countryCode;
+    }
+  }
+
+  async function loadCountries() {
+    try {
+      const res = await fetch('/api/countries');
+      const data = await res.json();
+
+      const homeSelect = document.getElementById('home_country');
+      const careerSelect = document.getElementById('career_country');
+
+      if (homeSelect) {
+        data.countries.forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c.code;
+          opt.textContent = c.name;
+          homeSelect.appendChild(opt);
         });
+        if (homeCountryCode) homeSelect.value = homeCountryCode;
+      }
 
-        // Education Form
-        document.getElementById('education-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = {
-                study_level_id: parseInt(document.getElementById('study_level_id').value),
-                programme_id: parseInt(document.getElementById('programme_id').value),
-                start_date: document.getElementById('edu_start_date').value || null,
-                end_date: document.getElementById('edu_end_date').value || null
-            };
-            
-            fetch('/profile/education/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.ok) {
-                    alert('Education added!');
-                    location.reload();
-                } else {
-                    alert('Error: ' + data.error);
-                }
-            })
-            .catch(err => alert('Error: ' + err));
+      if (careerSelect) {
+        data.countries.forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c.code;
+          opt.textContent = c.name;
+          careerSelect.appendChild(opt);
         });
+      }
+    } catch (error) {
+      console.error('Error loading countries:', error);
+    }
+  }
 
-        // Career Form
-        document.getElementById('career-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = {
-                job_title: document.getElementById('job_title').value,
-                company_name: document.getElementById('company_name').value,
-                city: document.getElementById('city').value || null,
-                work_country_code: document.getElementById('work_country_code').value || null,
-                start_date: document.getElementById('car_start_date').value,
-                end_date: document.getElementById('car_end_date').value || null,
-                job_description: document.getElementById('job_description').value || null
-            };
-            
-            fetch('/profile/career/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.ok) {
-                    alert('Career added!');
-                    location.reload();
-                } else {
-                    alert('Error: ' + data.error);
-                }
-            })
-            .catch(err => alert('Error: ' + err));
+  async function loadStudyLevels() {
+    try {
+      const res = await fetch('/api/study-levels');
+      const data = await res.json();
+      
+      const studyLevelSelect = document.getElementById('study_level_id');
+      
+      if (studyLevelSelect) {
+        studyLevelSelect.innerHTML = '<option value="">-- Select --</option>';
+        
+        data.study_levels.forEach(level => {
+          const opt = document.createElement('option');
+          opt.value = level.id;
+          opt.textContent = level.name;
+          studyLevelSelect.appendChild(opt);
         });
+      }
+    } catch (error) {
+      console.error('Error loading study levels:', error);
+    }
+  }
 
-        // Skill Form
-        document.getElementById('skill-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = {
-                skill_name: document.getElementById('skill_name').value
-            };
-            
-            fetch('/profile/skill/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.ok) {
-                    alert('Skill added!');
-                    location.reload();
-                } else {
-                    alert('Error: ' + data.error);
-                }
-            })
-            .catch(err => alert('Error: ' + err));
+  async function loadProgrammes(studyLevelId = null) {
+    try {
+      let url = '/api/programmes';
+      if (studyLevelId) {
+        url += `/${studyLevelId}`;
+      }
+      
+      const res = await fetch(url);
+      const data = await res.json();
+      
+      const programmeSelect = document.getElementById('programme_id');
+      
+      if (programmeSelect) {
+        programmeSelect.innerHTML = '<option value="">-- Select --</option>';
+        
+        data.programmes.forEach(prog => {
+          const opt = document.createElement('option');
+          opt.value = prog.id;
+          opt.textContent = `${prog.name} (${prog.faculty_name}${prog.institute_name ? ' - ' + prog.institute_name : ''})`;
+          programmeSelect.appendChild(opt);
         });
+      }
+    } catch (error) {
+      console.error('Error loading programmes:', error);
+    }
+  }
 
-        // Interest Form
-        document.getElementById('interest-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = {
-                interest_name: document.getElementById('interest_name').value
-            };
-            
-            fetch('/profile/interest/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.ok) {
-                    alert('Interest added!');
-                    location.reload();
-                } else {
-                    alert('Error: ' + data.error);
-                }
-            })
-            .catch(err => alert('Error: ' + err));
-        });
+  function openAddEducationModal() {
+    currentEditingEducationId = null;
+    document.getElementById('educationModalTitle').textContent = 'Add Education';
+    document.getElementById('educationSubmitBtn').textContent = 'Add';
+    document.getElementById('education_id').value = '';
+    document.getElementById('study_level_id').value = '';
+    document.getElementById('programme_id').value = '';
+    document.getElementById('edu_start_date').value = '';
+    document.getElementById('edu_end_date').value = '';
+    document.getElementById('programme_faculty').value = '';
+    document.getElementById('programme_institute').value = '';
+  }
 
-        // Expertise Form
-        document.getElementById('expertise-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = {
-                expertise_name: document.getElementById('expertise_name').value
-            };
-            
-            fetch('/profile/expertise/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.ok) {
-                    alert('Expertise added!');
-                    location.reload();
-                } else {
-                    alert('Error: ' + data.error);
-                }
-            })
-            .catch(err => alert('Error: ' + err));
-        });
-    </script>
-
-    <!-- Delete Functions -->
-    <script>
-        function deleteEducation(eduId) {
-            if (confirm('Are you sure?')) {
-                fetch(`/profile/education/${eduId}`, { method: 'DELETE' })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.ok) location.reload();
-                        else alert('Error: ' + data.error);
-                    });
-            }
+  function openEditEducationModal(eduId) {
+    currentEditingEducationId = eduId;
+    document.getElementById('educationModalTitle').textContent = 'Edit Education';
+    document.getElementById('educationSubmitBtn').textContent = 'Update';
+    
+    // Find education record
+    fetch('/api/education')
+      .then(res => res.json())
+      .then(data => {
+        const edu = data.education.find(e => e.id == eduId);
+        if (edu) {
+          document.getElementById('education_id').value = edu.id;
+          document.getElementById('study_level_id').value = edu.study_level_id;
+          document.getElementById('programme_id').value = edu.programme_id;
+          document.getElementById('edu_start_date').value = edu.start_date || '';
+          document.getElementById('edu_end_date').value = edu.end_date || '';
+          document.getElementById('programme_faculty').value = edu.faculty || '';
+          document.getElementById('programme_institute').value = edu.institute || 'Not specified';
         }
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('educationModal')).show();
+      })
+      .catch(error => console.error('Error loading education:', error));
+  }
 
-        function deleteCareer(careerId) {
-            if (confirm('Are you sure?')) {
-                fetch(`/profile/career/${careerId}`, { method: 'DELETE' })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.ok) location.reload();
-                        else alert('Error: ' + data.error);
-                    });
-            }
+  async function loadEducation() {
+    try {
+      const res = await fetch('/api/education');
+      const data = await res.json();
+      const list = document.getElementById('education-list');
+
+      if (!data.education || data.education.length === 0) {
+        list.innerHTML = `<div class="empty-state"><p>📚 No education added yet.</p></div>`;
+        return;
+      }
+
+      let html = '<div class="items-list">';
+      data.education.forEach(edu => {
+        html += `
+          <div class="item-card">
+            <div class="item-header">
+              <h3>${edu.study_level} - ${edu.programme}</h3>
+              ${mode === 'edit' ? `<div class="item-actions">
+                <button class="btn btn-sm btn-warning" onclick="openEditEducationModal(${edu.id})">Edit</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteEducation(${edu.id})">Delete</button>
+              </div>` : ''}
+            </div>
+            <div class="item-body">
+              <p><strong>Faculty:</strong> ${edu.faculty || 'N/A'}</p>
+              <p><strong>Institute:</strong> ${edu.institute || 'Not specified'}</p>
+              <p><strong>Start Date:</strong> ${edu.start_date || 'Ongoing'}</p>
+              <p><strong>End Date:</strong> ${edu.end_date || 'Ongoing'}</p>
+            </div>
+          </div>`;
+      });
+      html += '</div>';
+      list.innerHTML = html;
+    } catch (error) {
+      console.error('Error loading education:', error);
+    }
+  }
+
+  async function addEducation() {
+    const eduId = document.getElementById('education_id').value;
+    const isEdit = currentEditingEducationId !== null;
+    
+    const data = {
+      programme_id: document.getElementById('programme_id').value,
+      study_level_id: document.getElementById('study_level_id').value,
+      start_date: document.getElementById('edu_start_date').value || null,
+      end_date: document.getElementById('edu_end_date').value || null
+    };
+
+    if (!data.programme_id || !data.study_level_id) {
+      showMessage('Please select programme and study level', 'error');
+      return;
+    }
+
+    try {
+      let url = '/api/education';
+      let method = 'POST';
+      
+      if (isEdit) {
+        url += `/${currentEditingEducationId}`;
+        method = 'PUT';
+      }
+
+      const res = await fetch(url, {
+        method: method,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+
+      if (res.ok) {
+        showMessage(`✅ Education ${isEdit ? 'updated' : 'added'}!`, 'success');
+        bootstrap.Modal.getInstance(document.getElementById('educationModal')).hide();
+        await loadEducation();
+      } else {
+        showMessage('❌ ' + (result.error || 'Error'), 'error');
+      }
+    } catch (error) {
+      showMessage('❌ Error: ' + error.message, 'error');
+    }
+  }
+
+  async function deleteEducation(id) {
+    if (!confirm('Delete this education record?')) return;
+    try {
+      const res = await fetch(`/api/education/${id}`, { method: 'DELETE' });
+      const result = await res.json();
+      if (res.ok) {
+        showMessage('✅ Deleted!', 'success');
+        await loadEducation();
+      } else {
+        showMessage('❌ ' + (result.error || 'Error'), 'error');
+      }
+    } catch (error) {
+      showMessage('❌ Error: ' + error.message, 'error');
+    }
+  }
+
+  function openAddCareerModal() {
+    currentEditingCareerCode = null;
+    document.getElementById('careerModalTitle').textContent = 'Add Career';
+    document.getElementById('careerSubmitBtn').textContent = 'Add';
+    document.getElementById('career_id').value = '';
+    document.getElementById('job_title').value = '';
+    document.getElementById('company_name').value = '';
+    document.getElementById('career_country').value = '';
+    document.getElementById('car_start_date').value = '';
+    document.getElementById('car_end_date').value = '';
+    document.getElementById('job_description').value = '';
+  }
+
+  function openEditCareerModal(carId) {
+    currentEditingCareerCode = carId;
+    document.getElementById('careerModalTitle').textContent = 'Edit Career';
+    document.getElementById('careerSubmitBtn').textContent = 'Update';
+    
+    // Find career record
+    fetch('/api/career')
+      .then(res => res.json())
+      .then(data => {
+        const car = data.career.find(c => c.id == carId);
+        if (car) {
+          document.getElementById('career_id').value = car.id;
+          document.getElementById('job_title').value = car.job_title || '';
+          document.getElementById('company_name').value = car.company_name || '';
+          document.getElementById('career_country').value = car.country_code || '';
+          document.getElementById('car_start_date').value = car.start_date || '';
+          document.getElementById('car_end_date').value = car.end_date || '';
+          document.getElementById('job_description').value = car.job_description || '';
         }
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('careerModal')).show();
+      })
+      .catch(error => console.error('Error loading career:', error));
+  }
 
-        function deleteSkill(skillId) {
-            if (confirm('Are you sure?')) {
-                fetch(`/profile/skill/${skillId}`, { method: 'DELETE' })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.ok) location.reload();
-                        else alert('Error: ' + data.error);
-                    });
-            }
+  async function loadCareer() {
+    try {
+      const careerList = document.getElementById('career-list');
+      if (!careerList) return;
+
+      const res = await fetch('/api/career');
+      const data = await res.json();
+
+      if (!data.career || data.career.length === 0) {
+        careerList.innerHTML = `<div class="empty-state"><p>💼 No career history added yet.</p></div>`;
+        return;
+      }
+
+      let html = '<div class="items-list">';
+      data.career.forEach(car => {
+        html += `
+          <div class="item-card">
+            <div class="item-header">
+              <h3>${car.job_title}</h3>
+              ${mode === 'edit' ? `<div class="item-actions">
+                <button class="btn btn-sm btn-warning" onclick="openEditCareerModal(${car.id})">Edit</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteCareer(${car.id})">Delete</button>
+              </div>` : ''}
+            </div>
+            <div class="item-body">
+              <p><strong>Company:</strong> ${car.company_name}</p>
+              <p><strong>Location:</strong> ${car.country_name || 'Not specified'}</p>
+              <p><strong>Start Date:</strong> ${car.start_date || ''}</p>
+              <p><strong>End Date:</strong> ${car.end_date || 'Present'}</p>
+              ${car.job_description ? `<p><strong>Description:</strong> ${car.job_description}</p>` : ''}
+            </div>
+          </div>`;
+      });
+      html += '</div>';
+      careerList.innerHTML = html;
+    } catch (error) {
+      console.error('Error loading career:', error);
+    }
+  }
+
+  async function addCareer() {
+    const isEdit = currentEditingCareerCode !== null;
+    
+    const data = {
+      job_title: document.getElementById('job_title').value.trim(),
+      company_name: document.getElementById('company_name').value.trim(),
+      work_country_code: document.getElementById('career_country').value || null,
+      start_date: document.getElementById('car_start_date').value,
+      end_date: document.getElementById('car_end_date').value || null,
+      job_description: document.getElementById('job_description').value.trim() || null
+    };
+
+    if (!data.job_title || !data.company_name || !data.start_date) {
+      showMessage('Job title, company, and start date are required', 'error');
+      return;
+    }
+
+    try {
+      let url = '/api/career';
+      let method = 'POST';
+      
+      if (isEdit) {
+        url += `/${currentEditingCareerCode}`;
+        method = 'PUT';
+      }
+
+      const res = await fetch(url, {
+        method: method,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+
+      if (res.ok) {
+        showMessage(`✅ Career ${isEdit ? 'updated' : 'added'}!`, 'success');
+        bootstrap.Modal.getInstance(document.getElementById('careerModal')).hide();
+        await loadCareer();
+      } else {
+        showMessage('❌ ' + (result.error || 'Error'), 'error');
+      }
+    } catch (error) {
+      showMessage('❌ Error: ' + error.message, 'error');
+    }
+  }
+
+  async function deleteCareer(id) {
+    if (!confirm('Delete this career record?')) return;
+    try {
+      const res = await fetch(`/api/career/${id}`, { method: 'DELETE' });
+      const result = await res.json();
+      if (res.ok) {
+        showMessage('✅ Deleted!', 'success');
+        await loadCareer();
+      } else {
+        showMessage('❌ ' + (result.error || 'Error'), 'error');
+      }
+    } catch (error) {
+      showMessage('❌ Error: ' + error.message, 'error');
+    }
+  }
+
+  async function savePersonal() {
+    const data = {
+      first_name: document.getElementById('first_name').value.trim(),
+      last_name: document.getElementById('last_name').value.trim(),
+      phone_number: document.getElementById('phone_number').value.trim() || null,
+      address: document.getElementById('address').value.trim() || null,
+      home_country: document.getElementById('home_country').value || null
+    };
+
+    if (!data.first_name || !data.last_name) {
+      showMessage('First name and last name are required', 'error');
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/profile/personal', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+
+      if (res.ok) {
+        showMessage('✅ Saved!', 'success');
+        setTimeout(() => window.location.href = '/profile', 800);
+      } else {
+        showMessage('❌ ' + (result.error || 'Error'), 'error');
+      }
+    } catch (error) {
+      showMessage('❌ Error: ' + error.message, 'error');
+    }
+  }
+
+  // When education modal opens
+  document.addEventListener('shown.bs.modal', async function (e) {
+    if (e.target.id === 'educationModal') {
+      await loadStudyLevels();
+      await loadProgrammes();
+    }
+  });
+
+  // When study level changes
+  document.addEventListener('change', async function (e) {
+    if (e.target.id === 'study_level_id') {
+      const studyLevelId = e.target.value;
+      if (studyLevelId) {
+        await loadProgrammes(studyLevelId);
+      } else {
+        await loadProgrammes();
+      }
+      document.getElementById('programme_faculty').value = '';
+      document.getElementById('programme_institute').value = '';
+    }
+  });
+
+  // When programme changes
+  document.addEventListener('change', async function (e) {
+    if (e.target.id === 'programme_id') {
+      const programmeId = e.target.value;
+      
+      if (programmeId) {
+        try {
+          const res = await fetch('/api/programmes');
+          const data = await res.json();
+          
+          const programme = data.programmes.find(p => p.id == programmeId);
+          if (programme) {
+            document.getElementById('programme_faculty').value = programme.faculty_name || '';
+            document.getElementById('programme_institute').value = programme.institute_name || 'Not specified';
+          }
+        } catch (error) {
+          console.error('Error:', error);
         }
+      } else {
+        document.getElementById('programme_faculty').value = '';
+        document.getElementById('programme_institute').value = '';
+      }
+    }
+  });
 
-        function deleteInterest(interestId) {
-            if (confirm('Are you sure?')) {
-                fetch(`/profile/interest/${interestId}`, { method: 'DELETE' })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.ok) location.reload();
-                        else alert('Error: ' + data.error);
-                    });
-            }
-        }
-
-        function deleteExpertise(expertiseId) {
-            if (confirm('Are you sure?')) {
-                fetch(`/profile/expertise/${expertiseId}`, { method: 'DELETE' })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.ok) location.reload();
-                        else alert('Error: ' + data.error);
-                    });
-            }
-        }
-    </script>
-
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadCountries();
+    
+    if (mode === 'view') {
+      await displayCountryName();
+    }
+    
+    await loadEducation();
+    await loadCareer();
+  });
+</script>
 </body>
 </html>
