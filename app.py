@@ -816,11 +816,13 @@ def published_profile_page():
                 # Get target person info with publish status
                 cur.execute(
                     """
-                    SELECT id, first_name, last_name, identity_role, home_country,
-                           phone_number, address, email,
-                           profile_published, preferences_published
-                    FROM person
-                    WHERE id = %s
+                        SELECT p.id, p.first_name, p.last_name, p.identity_role,
+                               COALESCE(c.name, p.home_country) AS home_country,
+                               p.phone_number, p.address, p.email,
+                               p.profile_published, p.preferences_published
+                        FROM person p
+                        LEFT JOIN country c ON c.code = p.home_country
+                        WHERE p.id = %s 
                     """,
                     (person_id,)
                 )
@@ -1130,7 +1132,6 @@ def matching_page():
     return render_template("matching.html")
 
 
-
 @app.get("/api/matching/search")
 @login_required
 def api_matching_search():
@@ -1144,12 +1145,10 @@ def api_matching_search():
     try:
         with get_conn() as conn:
             with conn.cursor() as cur:
-                # Check current user + publication status
                 cur.execute(
                     """
                     SELECT id, identity_role, preferences_published
-                    FROM person
-                    WHERE id = %s
+                    FROM person WHERE id = %s
                     """,
                     (user_id,)
                 )
@@ -1169,7 +1168,8 @@ def api_matching_search():
 
                 opposite_role = "alumni" if my_identity_role == "student" else "student"
 
-                params = [user_id, user_id, opposite_role]
+                # Build params — first 5 are fixed for the main query
+                params = [user_id, user_id, user_id, user_id, opposite_role]
                 extra_filters = []
 
                 if topic_id:
@@ -1195,7 +1195,7 @@ def api_matching_search():
                         COALESCE(NULLIF(other.first_name, ''), other.username) AS first_name,
                         COALESCE(NULLIF(other.last_name, ''), '') AS last_name,
                         other.identity_role,
-                        other.home_country,
+                        COALESCE(hc.name, other.home_country) AS home_country,
                         my_pref.topic_id,
                         t.name AS topic_name,
                         my_pref.preference_role AS my_role,
@@ -1210,6 +1210,7 @@ def api_matching_search():
                       ON other_pref.topic_id = my_pref.topic_id
                     JOIN person other
                       ON other.id = other_pref.person_id
+                    LEFT JOIN country hc ON hc.code = other.home_country
                     LEFT JOIN mentorship_request mr
                       ON mr.topic_id = my_pref.topic_id
                      AND LEAST(mr.sender_id, mr.receiver_id) = LEAST(%s, other.id)
@@ -1227,11 +1228,10 @@ def api_matching_search():
                       {extra_sql}
                     ORDER BY t.name, first_name, last_name
                     """,
-                    [user_id, user_id, user_id, user_id, opposite_role, *params[3:]]
+                    params  # ← just pass params directly, no more slicing!
                 )
 
                 rows = cur.fetchall()
-
                 results = []
                 for row in rows:
                     results.append({
@@ -1252,8 +1252,8 @@ def api_matching_search():
     except Exception as e:
         print(f"Error in matching search: {str(e)}")
         return jsonify({"error": str(e)}), 500
-        
-        
+
+
 @app.get("/api/matching/filter-options")
 @login_required
 def api_matching_filter_options():
