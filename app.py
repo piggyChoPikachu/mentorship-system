@@ -5,6 +5,7 @@ import psycopg2.errors
 import os
 from dotenv import load_dotenv
 import json
+import random
 
 load_dotenv() 
 app = Flask(__name__)
@@ -1451,22 +1452,106 @@ def api_matching_request():
                         "error": f"Request already exists with status: {existing[1]}"
                     }), 409
 
+                # 70% accept, 30% reject automatically
+                auto_status = "accepted" if random.random() < 0.7 else "rejected"
+
+                # Insert request with auto status
                 cur.execute(
                     """
                     INSERT INTO mentorship_request (sender_id, receiver_id, topic_id, status)
-                    VALUES (%s, %s, %s, 'pending')
+                    VALUES (%s, %s, %s, %s)
                     RETURNING id
                     """,
-                    (sender_id, receiver_id, topic_id)
+                    (sender_id, receiver_id, topic_id, auto_status)
                 )
                 request_id = cur.fetchone()[0]
 
+                # If accepted — create mentorship immediately
+                mentorship_id = None
+                if auto_status == "accepted":
+
+                    # Get identity roles
+                    cur.execute(
+                        "SELECT id, identity_role FROM person WHERE id IN (%s, %s)",
+                        (sender_id, receiver_id)
+                    )
+                    people = cur.fetchall()
+                    role_map = {row[0]: row[1] for row in people}
+                    sender_identity = role_map.get(sender_id)
+                    receiver_identity = role_map.get(receiver_id)
+
+                    if sender_identity == "student" and receiver_identity == "alumni":
+                        student_id = sender_id
+                        alumni_id = receiver_id
+                    elif sender_identity == "alumni" and receiver_identity == "student":
+                        student_id = receiver_id
+                        alumni_id = sender_id
+                    else:
+                        return jsonify({"error": "Invalid identities"}), 400
+
+                    # Get preference roles
+                    cur.execute(
+                        """
+                        SELECT person_id, preference_role
+                        FROM preference
+                        WHERE topic_id = %s AND person_id IN (%s, %s)
+                        """,
+                        (topic_id, student_id, alumni_id)
+                    )
+                    pref_rows = cur.fetchall()
+                    pref_map = {row[0]: row[1] for row in pref_rows}
+                    student_pref = pref_map.get(student_id)
+                    alumni_pref = pref_map.get(alumni_id)
+
+                    # Derive mentorship type
+                    if alumni_pref == "mentor" and student_pref == "mentee":
+                        mentorship_type = "traditional"
+                    elif alumni_pref == "mentee" and student_pref == "mentor":
+                        mentorship_type = "reverse"
+                    elif alumni_pref == "two_way" and student_pref == "two_way":
+                        mentorship_type = "two_way"
+                    else:
+                        return jsonify({"error": "Invalid preference combination"}), 400
+
+                    # Create mentorship
+                    cur.execute(
+                        """
+                        INSERT INTO mentorship
+                            (student_id, alumni_id, topic_id, mentorship_type, status, start_date)
+                        VALUES (%s, %s, %s, %s, 'active', CURRENT_DATE)
+                        RETURNING id
+                        """,
+                        (student_id, alumni_id, topic_id, mentorship_type)
+                    )
+                    mentorship_id = cur.fetchone()[0]
+
+                    # Link request to mentorship
+                    cur.execute(
+                        """
+                        UPDATE mentorship_request
+                        SET mentorship_id = %s
+                        WHERE id = %s
+                        """,
+                        (mentorship_id, request_id)
+                    )
+
             conn.commit()
-            return jsonify({
-                "ok": True,
-                "request_id": request_id,
-                "message": "Request sent successfully!"
-            }), 201
+
+            if auto_status == "accepted":
+                return jsonify({
+                    "ok": True,
+                    "status": "accepted",
+                    "request_id": request_id,
+                    "mentorship_id": mentorship_id,
+                    "message": "✅ Matched! Go to Mentorships page to start messaging."
+                }), 201
+            else:
+                return jsonify({
+                    "ok": True,
+                    "status": "rejected",
+                    "request_id": request_id,
+                    "message": "❌ Your request was not accepted this time. Try connecting with someone else!"
+                }), 201
 
     except Exception as e:
         print(f"Error sending request: {str(e)}")

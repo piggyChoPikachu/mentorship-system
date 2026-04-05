@@ -277,27 +277,41 @@
             <div><strong>Location:</strong> ${locationText}</div>
           </div>
           <div class="actions-cell">
-            <button class="btn-action btn-send" ${disabled} onclick="sendRequest(${row.person_id}, ${row.topic_id})">${buttonText}</button>
+			<button class="btn-action btn-send" ${disabled} onclick="sendRequest(${row.person_id}, ${row.topic_id}, this)">${buttonText}</button>
             <button class="btn-action btn-view" onclick="viewProfile(${row.person_id})">View Profile</button>
           </div>
         </div>`;
     }).join('');
   }
 
-  async function sendRequest(receiverId, topicId) {
-    const res = await fetch('/api/matching/request', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ receiver_id: receiverId, topic_id: topicId })
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      showMessage(data.error || 'Error sending request', 'error');
-      return;
-    }
-    showMessage(data.message || 'Request sent successfully', 'success');
-    applyFilter();
-  }
+	async function sendRequest(receiverId, topicId, btnEl) {
+		btnEl.disabled = true;
+		btnEl.textContent = 'Sending...';
+
+		const res = await fetch('/api/matching/request', {
+		  method: 'POST',
+		  headers: { 'Content-Type': 'application/json' },
+		  body: JSON.stringify({ receiver_id: receiverId, topic_id: topicId })
+		});
+		const data = await res.json();
+
+		if (!res.ok) {
+		  showMessage(data.error || 'Error sending request', 'error');
+		  btnEl.disabled = false;
+		  btnEl.textContent = 'Send Request';
+		  return;
+		}
+
+		if (data.status === 'accepted') {
+		  btnEl.textContent = 'Matched';
+		  btnEl.style.background = '#1D9E75';
+		  showMessage(data.message, 'success');
+		} else {
+		  btnEl.textContent = 'Rejected';
+		  btnEl.style.background = '#888';
+		  showMessage(data.message, 'warning');
+		}
+	  }
 
   async function viewProfile(personId) {
     const body = document.getElementById('profile-modal-body');
