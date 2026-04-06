@@ -2325,5 +2325,63 @@ def api_send_message(mentorship_id):
         return jsonify({"error": str(e)}), 500
 
 
+
+
+
+
+
+
+
+
+@app.get("/statistics")
+@login_required
+def statistics_page():
+    """Show user geographic distribution statistics"""
+    return render_template("statistics.html")
+
+
+@app.get("/api/statistics/user-distribution")
+@login_required
+def api_user_distribution():
+    """Get user count per country for map"""
+    try:
+        with get_conn() as conn:
+            with conn.cursor() as cur:
+                cur.execute("""
+                    SELECT c.name, p.home_country, COUNT(*) AS user_count
+                    FROM person p
+                    JOIN country c ON c.code = p.home_country
+                    WHERE p.profile_published = TRUE
+                      AND p.home_country IS NOT NULL
+                    GROUP BY p.home_country, c.name
+                    ORDER BY user_count DESC
+                """)
+                distribution = [
+                    {"country_code": row[1], "country_name": row[0], "user_count": row[2]}
+                    for row in cur.fetchall()
+                ]
+                cur.execute("SELECT COUNT(*) FROM person WHERE profile_published = TRUE")
+                total_users = cur.fetchone()[0]
+                cur.execute("SELECT COUNT(*) FROM mentorship WHERE status = 'active'")
+                active_mentorships = cur.fetchone()[0]
+                cur.execute("""
+                    SELECT COUNT(DISTINCT home_country) FROM person
+                    WHERE profile_published = TRUE AND home_country IS NOT NULL
+                """)
+                total_countries = cur.fetchone()[0]
+                cur.execute("SELECT COUNT(*) FROM topic")
+                total_topics = cur.fetchone()[0]
+                return jsonify({
+                    "distribution": distribution,
+                    "total_users": total_users,
+                    "active_mentorships": active_mentorships,
+                    "total_countries": total_countries,
+                    "total_topics": total_topics
+                }), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
