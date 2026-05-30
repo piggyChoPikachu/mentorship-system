@@ -1,0 +1,257 @@
+"name","study_level_id","faculty_id","institute_id"
+"Classical Philology",2,1,6
+"Classical Studies",1,1,6
+"Community Education and Hobby Activity",1,1,8
+"Creative Applications of Cultural Heritage",2,1,8
+"Creative Project Management",2,1,8
+"Cultural Management",2,1,5
+"Culture Management",1,1,8
+"Dance Art",1,1,8
+"English Language and Literature",1,1,6
+"English Studies",2,1,6
+"Estonian Native Construction",1,1,8
+"Estonian Native Craft",1,1,8
+"Estonian Native Metalwork",1,1,8
+"Estonian Native Textile",1,1,8
+"Estonian and Finno-Ugric Languages",2,1,2
+"Estonian and Finno-Ugric Linguistics",1,1,2
+"Estonian and Finno-Ugric Linguistics",2,1,2
+"Estonian and Finno-Ugric Linguistics",3,1,2
+"Ethnology, Folkloristics and Applied Anthropology",2,1,5
+"European Languages and Cultures",2,1,6
+"Folkloristics and Applied Heritage Studies",2,1,5
+"German Language and Literature",1,1,6
+"German Studies",2,1,6
+"Germanic and Romance Languages and Literatures",3,1,NA
+"History",1,1,1
+"History",2,1,1
+"History",3,1,1
+"Humanities",3,1,NA
+"Information Management",2,1,NA
+"Jazz Music",1,1,8
+"Linguistics",2,1,2
+"Literature and Cultural Research",1,1,5
+"Literature and Cultural Research",3,1,5
+"Literature and Theatre Research",2,1,5
+"Music",1,1,8
+"Music Education",2,1,8
+"Native Crafts",2,1,8
+"Painting",1,1,5
+"Painting",2,1,5
+"Performing Arts",1,1,8
+"Philosophy",1,1,3
+"Philosophy",2,1,3
+"Philosophy",3,1,3
+"Religious Studies",2,1,7
+"Romance Studies",1,1,6
+"Romance Studies",2,1,6
+"Russian and Slavonic Philology",1,1,6
+"Russian and Slavonic Philology",3,1,NA
+"Scandinavian Languages and Cultures",1,1,6
+"Scandinavian Languages and Cultures",2,1,6
+"School Music",1,1,8
+"Semiotics",2,1,3
+"Semiotics and Culture Studies",1,1,3
+"Semiotics and Culture Studies",2,1,3
+"Semiotics and Culture Studies",3,1,3
+"Slavistics",2,1,6
+"Sound Engineering Arts",2,1,8
+"Sound and Visual Technology",2,1,8
+"Teacher of Arts",2,1,5
+"Teacher of Arts and Technology",2,1,8
+"Teacher of Arts, Handicraft and Home Economics",2,1,5
+"Teacher of Estonian Language and Literature",2,1,2
+"Teacher of Estonian Language and Literature in Non-Estonian School",2,1,2
+"Teacher of Foreign Languages",2,1,6
+"Teacher of History and Civics",2,1,1
+"Theatre Technical Arts",1,1,8
+"Theatrical Studies",1,1,8
+"Theology",2,1,7
+"Theology and Religious Studies",1,1,7
+"Theology and Religious Studies",2,1,7
+"Theology and Religious Studies",3,1,7
+"Traditional Music",1,1,8
+"Traditional Music",2,1,8
+"Translation Studies",2,1,6
+"Actuarial and Financial Engineering",2,4,17
+"Applied Measurement Science",2,4,13
+"Bioengineering",2,4,NA
+"Biology",1,4,18
+"Biology",2,4,18
+"Biology and Biodiversity Conservation",1,4,18
+"Biology and Eco-innovation",2,4,18
+"Biomedical Engineering and Medical Physics",2,4,11
+"Biomedicine",2,4,16
+"Botany and Ecology",3,4,18
+"Chemical and Physical Sciences",3,4,NA
+"Chemistry",1,4,13
+"Chemistry",2,4,13
+"Chemistry",3,4,13
+"Computer Engineering",1,4,19
+"Computer Engineering",2,4,19
+"Computer Science",1,4,9
+"Computer Science",2,4,9
+"Computer Science",3,4,9
+"Conversion Master in IT",2,4,9
+"Cybersecurity",2,4,9
+"Data Science",2,4,9
+"Ecology and Biodiversity Conservation",1,4,18
+"Ecology and Biodiversity Conservation",2,4,18
+"Engineering and Technology",3,4,NA
+"Environmental Governance and Adaptation to Climate Change",2,4,18
+"Environmental Management and Planning",1,4,18
+"Environmental Technology",1,4,18
+"Environmental Technology",2,4,18
+"Environmental Technology",3,4,NA
+"Excellence in Analytical Chemistry",2,4,13
+"Financial Mathematics",2,4,17
+"Financial and Actuarial Mathematics",2,4,17
+"Gene Technology",1,4,16
+"Gene Technology",2,4,16
+"Gene Technology",3,4,NA
+"Geography",1,4,18
+"Geography",2,4,18
+"Geography",3,4,18
+"Geoinformatics for Urbanised Society",2,4,18
+"Geology",1,4,18
+"Geology",2,4,18
+"Geology",3,4,18
+"Geology and Environmental Technology",1,4,18
+"Information Technology",1,4,9
+"Information Technology",2,4,9
+"Life and Earth Sciences",3,4,NA
+"Materials Science",1,4,11
+"Materials Science",2,4,11
+"Materials Science",3,4,NA
+"Materials Science and Technology",2,4,11
+"Materials and Processes for Sustainable Energetics",2,4,13
+"Mathematical Statistics",1,4,17
+"Mathematical Statistics",2,4,17
+"Mathematical Statistics",3,4,17
+"Mathematics",1,4,17
+"Mathematics",2,4,17
+"Mathematics",3,4,17
+"Mathematics and Computer Science",3,4,NA
+"Mathematics and Statistics",2,4,17
+"Molecular Biosciences",2,4,16
+"Molecular Engineering",3,4,13
+"Molecular and Cell Biology",3,4,NA
+"Physics",1,4,11
+"Physics",2,4,11
+"Physics",3,4,NA
+"Physics, Chemistry and Materials Science",1,4,13
+"Robotics and Computer Engineering",2,4,19
+"Science Education",3,4,18
+"Science and Technology",1,4,NA
+"Secondary School Science Teacher",2,4,18
+"Software Engineering",2,4,9
+"Teacher of Mathematics and Informatics",2,4,17
+"Zoology and Hydrobiology",3,4,NA
+"Clinical Nutrition",2,3,22
+"Clinical Pharmacy",2,3,23
+"Dentistry",1,3,NA
+"Exercise and Sport Sciences",3,3,26
+"Medicine",1,3,NA
+"Medicine",3,3,NA
+"Medicine and Sport",3,3,NA
+"Neurosciences",3,3,NA
+"Nursing Science",2,3,25
+"Pharmacy",1,3,NA
+"Pharmacy",3,3,23
+"Physical Education and Sport",1,3,26
+"Physical Education and Sport",2,3,26
+"Physiotherapy",1,3,26
+"Physiotherapy",2,3,26
+"Public Health",2,3,25
+"Administration of Social Work and Rehabilitation",1,2,33
+"Analysis of Society and Information Processes",2,2,36
+"Applied Behavioural Science",2,2,34
+"Baltic Sea Region Studies",2,2,29
+"Business Administration",1,2,30
+"Central and Eastern European, Russian and Eurasian Studies",2,2,29
+"Change Management in Society",2,2,36
+"Communication Management",2,2,36
+"Community Development and Social Well-being",2,2,36
+"Comparative Politics",2,2,29
+"Contemporary Asian and Middle Eastern Studies",2,2,30
+"Contemporary Economy",2,2,30
+"Contemporary Financial Management",2,2,30
+"Contemporary Marketing",2,2,30
+"Crossmedia Production",2,2,36
+"Design Thinking and Digital Marketing",1,2,33
+"Disinformation and Societal Resilience",2,2,36
+"Early Years Educator",2,2,28
+"Early Years Teacher",1,2,28
+"Early Years Teacher in Multilingual Learning Environment",1,2,31
+"Economics",3,2,30
+"Economics and Business Administration",1,2,NA
+"Economics and Business Administration",2,2,30
+"Educational Innovation",2,2,28
+"Educational Management",2,2,28
+"Educational Science (Math and Sciences)",1,2,28
+"Educational Science (Sciences)",1,2,28
+"Educational Sciences",2,2,28
+"Educational Technology",2,2,28
+"Entrepreneurship and Digital Solutions",1,2,31
+"Entrepreneurship and Project Management",1,2,NA
+"Entrepreneurship and Technology Management",2,2,30
+"Entrepreneurship in Economic Policymaking",2,2,30
+"Estonian Sign Language Interpreter",1,2,28
+"European Studies",2,2,29
+"European Union - Russia Studies",2,2,29
+"Government and Politics",1,2,29
+"Humanities in Multilingual School",1,2,31
+"Inclusive Education",2,2,28
+"Information Management",1,2,36
+"Information Society and Social Well-being",1,2,36
+"Information Technology Law",2,2,32
+"Information Technology Systems Development",1,2,31
+"Information and Knowledge Management",2,2,36
+"Information and Records Management",1,2,36
+"Innovation and Technology Management",2,2,30
+"International Law and Human Rights",2,2,32
+"International Relations",2,2,29
+"International Relations and Regional Studies",2,2,29
+"Journalism",2,2,36
+"Journalism and Communication",1,2,36
+"Journalism and Communication",2,2,36
+"Languages and Multilingualism in School",1,2,31
+"Law",1,2,32
+"Law",2,2,32
+"Law",3,2,32
+"Librarianship and Information Environments",1,2,36
+"Local Government's Administration",1,2,31
+"Managerial and Digital Communication",2,2,36
+"Marketing and Financial Management",2,2,30
+"Media and Communication",3,2,36
+"Person-Centred Social Innovation",2,2,33
+"Personal Branding Based Entrepreneurship",2,2,33
+"Political Science",3,2,29
+"Politics and Governance in the Digital Age",2,2,29
+"Pre-School Educator in Multilingual Learning Environment",2,2,31
+"Primary School Teacher",1,2,28
+"Primary School Teacher in Multilingual School",1,2,31
+"Psychology",1,2,34
+"Psychology",2,2,34
+"Psychology",3,2,34
+"Quantitative Economics",2,2,30
+"Robotics and Applied Data Science",2,2,31
+"Service Design and Management",2,2,33
+"Social Sciences",3,2,NA
+"Social Work and Social Policy",2,2,36
+"Sociology",2,2,36
+"Sociology",3,2,36
+"Special Education and Speech Therapy",1,2,28
+"Special Education and Speech Therapy",2,2,28
+"Strategic Management",2,2,30
+"Teacher Education",2,2,28
+"Teacher of Humanities in Multilingual School",2,2,31
+"Teacher of Languages in a Multilingual School",2,2,31
+"Teacher of Several Subjects in Basic School",2,2,28
+"Teacher of Vocational Training",1,2,28
+"Teaching Humanities and Social Subjects in Basic School",1,2,28
+"Teaching Natural and Exact Sciences at Lower Secondary School",1,2,28
+"Teaching Russian as a Foreign Language",2,2,31
+"Tourism and Hotel Management",1,2,33
+"Wellness and Spa Service Design and Management",2,2,33
+"Youth Work",1,2,31
