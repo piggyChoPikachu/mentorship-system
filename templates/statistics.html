@@ -5,154 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Distribution — Statistics</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" rel="stylesheet">
   <style>
     body { background: #f8f9fa; padding: 20px 0; }
     .stats-container { max-width: 1200px; margin: 0 auto; }
-
-    .header-card {
-      background: white;
-      padding: 24px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.08);
-      margin-bottom: 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-    }
-
+    .header-card { background: white; padding: 24px; border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08); margin-bottom: 24px;
+      display: flex; justify-content: space-between; align-items: center; gap: 16px; }
     .header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-
-    .btn-nav {
-      border-radius: 6px;
-      padding: 10px 18px;
-      font-weight: 600;
-      text-decoration: none;
-      display: inline-block;
-      cursor: pointer;
-      background: #fff;
-      color: #4d5ed1;
-      border: 1px solid #d8ddff;
-    }
-
-    .section-card {
-      background: white;
-      padding: 24px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.08);
-      margin-bottom: 24px;
-    }
-
-    /* metric cards */
-    .metric-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-
-    .metric-card {
-      background: #f0f1fa;
-      border-radius: 8px;
-      padding: 16px;
-      text-align: center;
-    }
-
-    .metric-label {
-      font-size: 13px;
-      color: #666;
-      margin-bottom: 6px;
-    }
-
-    .metric-value {
-      font-size: 28px;
-      font-weight: 700;
-      color: #667eea;
-    }
-
-    /* map */
-    #map-container {
-      width: 100%;
-      position: relative;
-    }
-
-    #map svg {
-      width: 100%;
-      height: auto;
-    }
-
-    .country-path {
-      stroke: #fff;
-      stroke-width: 0.5;
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
-
-    .country-path:hover { opacity: 0.75; }
-
-    /* tooltip */
-    .map-tooltip {
-      position: fixed;
-      background: rgba(30,30,30,0.92);
-      color: #fff;
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-size: 13px;
-      pointer-events: none;
-      display: none;
-      z-index: 9999;
-      white-space: nowrap;
-    }
-
-    /* legend */
-    .legend-wrap {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 12px;
-      font-size: 12px;
-      color: #666;
-    }
-
-    .legend-bar {
-      height: 12px;
-      width: 200px;
-      border-radius: 4px;
-    }
-
-    /* bar chart */
-    .bar-wrap { overflow-x: auto; }
-
-    #bar-chart {
-      width: 100%;
-      min-width: 400px;
-    }
-
-    .bar-label { font-size: 12px; fill: #555; }
-    .bar-value { font-size: 11px; fill: #667eea; font-weight: 600; }
-
-    .section-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: #333;
-      margin-bottom: 16px;
-    }
-
-    .loading {
-      text-align: center;
-      padding: 40px;
-      color: #888;
-    }
-
+    .btn-nav { border-radius: 6px; padding: 10px 18px; font-weight: 600; text-decoration: none;
+      display: inline-block; cursor: pointer; background: #fff; color: #4d5ed1; border: 1px solid #d8ddff; }
+    .section-card { background: white; padding: 24px; border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08); margin-bottom: 24px; }
+    .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px; margin-bottom: 24px; }
+    .metric-card { background: #f0f1fa; border-radius: 8px; padding: 16px; text-align: center; }
+    .metric-label { font-size: 13px; color: #666; margin-bottom: 6px; }
+    .metric-value { font-size: 28px; font-weight: 700; color: #667eea; }
+    /* Leaflet map container needs an explicit height */
+    #map { width: 100%; height: 520px; border-radius: 8px; background: #f4f7fb; }
+    .leaflet-container { background: #f4f7fb; }
+    .legend-wrap { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 12px; color: #666; }
+    .legend-bar { height: 12px; width: 200px; border-radius: 4px; }
+    /* HTML/CSS bar chart (no SVG) */
+    #bar-chart { width: 100%; }
+    .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .bar-name { width: 160px; flex-shrink: 0; text-align: right; font-size: 12px; color: #555; }
+    .bar-track { flex: 1; background: #eef0f7; border-radius: 4px; }
+    .bar-fill { height: 22px; background: #667eea; border-radius: 4px; min-width: 2px; transition: width .3s; }
+    .bar-value { width: 36px; flex-shrink: 0; font-size: 12px; color: #667eea; font-weight: 600; }
+    .section-title { font-size: 18px; font-weight: 600; color: #333; margin-bottom: 16px; }
+    .loading { text-align: center; padding: 40px; color: #888; }
     @media (max-width: 768px) {
       .header-card { flex-direction: column; align-items: flex-start; }
+      .bar-name { width: 110px; }
     }
   </style>
 </head>
 <body>
 <div class="stats-container">
 
-  <!-- header -->
   <div class="header-card">
     <div>
       <h1>🌍 User Geographic Distribution</h1>
@@ -161,36 +53,22 @@
       </div>
     </div>
     <div class="header-actions">
-      <a href="/matching"            class="btn-nav">Matching</a>
-      <a href="/requests-management" class="btn-nav">Requests</a>
-      <a href="/published-profile"   class="btn-nav">Published Profile</a>
-      <a href="/preference"          class="btn-nav">Preferences</a>
+      <a href="/matching"              class="btn-nav">Matching</a>
+      <a href="/requests-management"   class="btn-nav">Requests</a>
+      <a href="/published-profile"     class="btn-nav">Published Profile</a>
+      <a href="/preference"            class="btn-nav">Preferences</a>
       <a href="/mentorship-management" class="btn-nav">Mentorships</a>
-      <a href="/logout"              class="btn-nav">Logout</a>
+      <a href="/logout"                class="btn-nav">Logout</a>
     </div>
   </div>
 
-  <!-- metric cards -->
   <div class="metric-grid" id="metrics">
-    <div class="metric-card">
-      <div class="metric-label">Total Published Users</div>
-      <div class="metric-value" id="total-users">—</div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">Countries Represented</div>
-      <div class="metric-value" id="total-countries">—</div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">Active Mentorships</div>
-      <div class="metric-value" id="active-mentorships">—</div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">Total Topics</div>
-      <div class="metric-value" id="total-topics">—</div>
-    </div>
+    <div class="metric-card"><div class="metric-label">Total Published Users</div><div class="metric-value" id="total-users">—</div></div>
+    <div class="metric-card"><div class="metric-label">Countries Represented</div><div class="metric-value" id="total-countries">—</div></div>
+    <div class="metric-card"><div class="metric-label">Active Mentorships</div><div class="metric-value" id="active-mentorships">—</div></div>
+    <div class="metric-card"><div class="metric-label">Total Topics</div><div class="metric-value" id="total-topics">—</div></div>
   </div>
 
-  <!-- map -->
   <div class="section-card">
     <div class="section-title">🗺️ User Distribution by Country</div>
     <div id="map-container">
@@ -205,28 +83,56 @@
     </div>
   </div>
 
-  <!-- bar chart -->
   <div class="section-card">
     <div class="section-title">📊 Top Countries by User Count</div>
-    <div class="bar-wrap">
-      <div class="loading" id="bar-loading">⏳ Loading chart...</div>
-      <svg id="bar-chart" style="display:none;"></svg>
-    </div>
+    <div class="loading" id="bar-loading">⏳ Loading chart...</div>
+    <div id="bar-chart" style="display:none;"></div>
   </div>
 
 </div>
 
-<!-- tooltip -->
-<div class="map-tooltip" id="tooltip"></div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+
 // ── globals ──────────────────────────────────────────────
-const WORLD_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
-const tooltip   = document.getElementById('tooltip');
-let   statsData = null;
+const GEOJSON_URL = 'https://cdn.jsdelivr.net/gh/johan/world.geo.json@master/countries.geo.json';
+const A2_TO_A3 = {
+  AD:'AND',AE:'ARE',AF:'AFG',AG:'ATG',AI:'AIA',AL:'ALB',AM:'ARM',AO:'AGO',
+  AQ:'ATA',AR:'ARG',AS:'ASM',AT:'AUT',AU:'AUS',AW:'ABW',AX:'ALA',AZ:'AZE',
+  BA:'BIH',BB:'BRB',BD:'BGD',BE:'BEL',BF:'BFA',BG:'BGR',BH:'BHR',BI:'BDI',
+  BJ:'BEN',BL:'BLM',BM:'BMU',BN:'BRN',BO:'BOL',BQ:'BES',BR:'BRA',BS:'BHS',
+  BT:'BTN',BV:'BVT',BW:'BWA',BY:'BLR',BZ:'BLZ',CA:'CAN',CC:'CCK',CD:'COD',
+  CF:'CAF',CG:'COG',CH:'CHE',CI:'CIV',CK:'COK',CL:'CHL',CM:'CMR',CN:'CHN',
+  CO:'COL',CR:'CRI',CU:'CUB',CV:'CPV',CW:'CUW',CX:'CXR',CY:'CYP',CZ:'CZE',
+  DE:'DEU',DJ:'DJI',DK:'DNK',DM:'DMA',DO:'DOM',DZ:'DZA',EC:'ECU',EE:'EST',
+  EG:'EGY',EH:'ESH',ER:'ERI',ES:'ESP',ET:'ETH',FI:'FIN',FJ:'FJI',FK:'FLK',
+  FM:'FSM',FO:'FRO',FR:'FRA',GA:'GAB',GB:'GBR',GD:'GRD',GE:'GEO',GF:'GUF',
+  GG:'GGY',GH:'GHA',GI:'GIB',GL:'GRL',GM:'GMB',GN:'GIN',GP:'GLP',GQ:'GNQ',
+  GR:'GRC',GS:'SGS',GT:'GTM',GU:'GUM',GW:'GNB',GY:'GUY',HK:'HKG',HM:'HMD',
+  HN:'HND',HR:'HRV',HT:'HTI',HU:'HUN',ID:'IDN',IE:'IRL',IL:'ISR',IM:'IMN',
+  IN:'IND',IO:'IOT',IQ:'IRQ',IR:'IRN',IS:'ISL',IT:'ITA',JE:'JEY',JM:'JAM',
+  JO:'JOR',JP:'JPN',KE:'KEN',KG:'KGZ',KH:'KHM',KI:'KIR',KM:'COM',KN:'KNA',
+  KP:'PRK',KR:'KOR',KW:'KWT',KY:'CYM',KZ:'KAZ',LA:'LAO',LB:'LBN',LC:'LCA',
+  LI:'LIE',LK:'LKA',LR:'LBR',LS:'LSO',LT:'LTU',LU:'LUX',LV:'LVA',LY:'LBY',
+  MA:'MAR',MC:'MCO',MD:'MDA',ME:'MNE',MF:'MAF',MG:'MDG',MH:'MHL',MK:'MKD',
+  ML:'MLI',MM:'MMR',MN:'MNG',MO:'MAC',MP:'MNP',MQ:'MTQ',MR:'MRT',MS:'MSR',
+  MT:'MLT',MU:'MUS',MV:'MDV',MW:'MWI',MX:'MEX',MY:'MYS',MZ:'MOZ',NA:'NAM',
+  NC:'NCL',NE:'NER',NF:'NFK',NG:'NGA',NI:'NIC',NL:'NLD',NO:'NOR',NP:'NPL',
+  NR:'NRU',NU:'NIU',NZ:'NZL',OM:'OMN',PA:'PAN',PE:'PER',PF:'PYF',PG:'PNG',
+  PH:'PHL',PK:'PAK',PL:'POL',PM:'SPM',PN:'PCN',PR:'PRI',PS:'PSE',PT:'PRT',
+  PW:'PLW',PY:'PRY',QA:'QAT',RE:'REU',RO:'ROU',RS:'SRB',RU:'RUS',RW:'RWA',
+  SA:'SAU',SB:'SLB',SC:'SYC',SD:'SDN',SE:'SWE',SG:'SGP',SH:'SHN',SI:'SVN',
+  SJ:'SJM',SK:'SVK',SL:'SLE',SM:'SMR',SN:'SEN',SO:'SOM',SR:'SUR',SS:'SSD',
+  ST:'STP',SV:'SLV',SX:'SXM',SY:'SYR',SZ:'SWZ',TC:'TCA',TD:'TCD',TF:'ATF',
+  TG:'TGO',TH:'THA',TJ:'TJK',TK:'TKL',TL:'TLS',TM:'TKM',TN:'TUN',TO:'TON',
+  TR:'TUR',TT:'TTO',TV:'TUV',TW:'TWN',TZ:'TZA',UA:'UKR',UG:'UGA',UM:'UMI',
+  US:'USA',UY:'URY',UZ:'UZB',VA:'VAT',VC:'VCT',VE:'VEN',VG:'VGB',VI:'VIR',
+  VN:'VNM',VU:'VUT',WF:'WLF',WS:'WSM',XK:'KOS',YE:'YEM',YT:'MYT',ZA:'ZAF',
+  ZM:'ZMB',ZW:'ZWE'
+};
+let statsData = null;
+let leafletMap = null;
 
 // ── fetch stats from backend ─────────────────────────────
 async function fetchStats() {
@@ -244,173 +150,114 @@ function updateMetrics(data) {
   document.getElementById('total-topics').textContent       = data.total_topics;
 }
 
-// ── build ISO-alpha2 → count lookup ──────────────────────
-function buildLookup(distribution) {
-  const map = {};
-  distribution.forEach(d => { map[d.country_code] = d.user_count; });
-  return map;
+// ── colour helpers (linear interpolation) ────────────────
+const C_LOW  = [230, 241, 251];   // #E6F1FB
+const C_HIGH = [24, 95, 165];     // #185FA5
+const NO_DATA = '#e8e8e8';
+function colorFor(count, maxVal) {
+  if (!count) return NO_DATA;
+  const t = Math.min(count / maxVal, 1);
+  const c = [0, 1, 2].map(i => Math.round(C_LOW[i] + (C_HIGH[i] - C_LOW[i]) * t));
+  return `rgb(${c[0]},${c[1]},${c[2]})`;
 }
 
-// ── ISO-alpha2 ↔ numeric id map (subset of common codes) ─
-// world-atlas uses numeric ISO-3166-1 ids
-// We need alpha2 → numeric mapping
-const A2_TO_NUM = {
-  AF:'004',AL:'008',DZ:'012',AD:'020',AO:'024',AG:'028',AR:'032',AM:'051',
-  AU:'036',AT:'040',AZ:'031',BS:'044',BH:'048',BD:'050',BB:'052',BY:'112',
-  BE:'056',BZ:'084',BJ:'204',BT:'064',BO:'068',BA:'070',BW:'072',BR:'076',
-  BN:'096',BG:'100',BF:'854',BI:'108',CV:'132',KH:'116',CM:'120',CA:'124',
-  CF:'140',TD:'148',CL:'152',CN:'156',CO:'170',KM:'174',CG:'178',CD:'180',
-  CR:'188',CI:'384',HR:'191',CU:'192',CY:'196',CZ:'203',DK:'208',DJ:'262',
-  DM:'212',DO:'214',EC:'218',EG:'818',SV:'222',GQ:'226',ER:'232',EE:'233',
-  SZ:'748',ET:'231',FJ:'242',FI:'246',FR:'250',GA:'266',GM:'270',GE:'268',
-  DE:'276',GH:'288',GR:'300',GD:'308',GT:'320',GN:'324',GW:'624',GY:'328',
-  HT:'332',HN:'340',HU:'348',IS:'352',IN:'356',ID:'360',IR:'364',IQ:'368',
-  IE:'372',IL:'376',IT:'380',JM:'388',JP:'392',JO:'400',KZ:'398',KE:'404',
-  KI:'296',KW:'414',KG:'417',LA:'418',LV:'428',LB:'422',LS:'426',LR:'430',
-  LY:'434',LI:'438',LT:'440',LU:'442',MG:'450',MW:'454',MY:'458',MV:'462',
-  ML:'466',MT:'470',MH:'584',MR:'478',MU:'480',MX:'484',FM:'583',MD:'498',
-  MC:'492',MN:'496',ME:'499',MA:'504',MZ:'508',MM:'104',NA:'516',NR:'520',
-  NP:'524',NL:'528',NZ:'554',NI:'558',NE:'562',NG:'566',NO:'578',OM:'512',
-  PK:'586',PW:'585',PA:'591',PG:'598',PY:'600',PE:'604',PH:'608',PL:'616',
-  PT:'620',QA:'634',RO:'642',RU:'643',RW:'646',KN:'659',LC:'662',VC:'670',
-  WS:'882',SM:'674',ST:'678',SA:'682',SN:'686',RS:'688',SC:'690',SL:'694',
-  SG:'702',SK:'703',SI:'705',SB:'090',SO:'706',ZA:'710',SS:'728',ES:'724',
-  LK:'144',SD:'729',SR:'740',SE:'752',CH:'756',SY:'760',TJ:'762',TZ:'834',
-  TH:'764',TL:'626',TG:'768',TO:'776',TT:'780',TN:'788',TR:'792',TM:'795',
-  TV:'798',UG:'800',UA:'804',AE:'784',GB:'826',US:'840',UY:'858',UZ:'860',
-  VU:'548',VE:'862',VN:'704',YE:'887',ZM:'894',ZW:'716',MK:'807',XK:'926'
-};
-
-// ── draw choropleth map ───────────────────────────────────
+// ── draw choropleth map (Leaflet, CANVAS renderer — no SVG) ──
 async function drawMap(distribution) {
   document.getElementById('map-loading').style.display = 'none';
 
-  const lookup  = buildLookup(distribution);
-  const maxVal  = Math.max(...Object.values(lookup), 1);
+  const maxVal = Math.max(...distribution.map(d => d.user_count), 1);
 
-  // color scale
-  const isDark  = matchMedia('(prefers-color-scheme: dark)').matches;
-  const colorScale = d3.scaleSequential()
-    .domain([0, maxVal])
-    .interpolator(d3.interpolate('#E6F1FB', '#185FA5'));
+  // build alpha-3 -> {count, name} from the alpha-2 backend data
+  const byA3 = {};
+  distribution.forEach(d => {
+    const a3 = A2_TO_A3[d.country_code];
+    if (a3) byA3[a3] = { count: d.user_count, name: d.country_name };
+  });
 
-  const noDataColor = '#e8e8e8';
+  // preferCanvas: true => Leaflet renders polygons to <canvas>, not <svg>
+  leafletMap = L.map('map', {
+    preferCanvas: true,
+    attributionControl: false,
+    minZoom: 1,
+    worldCopyJump: false,
+    scrollWheelZoom: true
+  });
 
-  // SVG setup
-  const container = document.getElementById('map');
-  const width     = container.clientWidth || 900;
-  const height    = Math.round(width * 0.5);
+  const geo = await fetch(GEOJSON_URL).then(r => r.json());
 
-  const svg = d3.select('#map')
-    .append('svg')
-    .attr('viewBox', `0 0 ${width} ${height}`)
-    .attr('width', '100%');
+  const layer = L.geoJSON(geo, {
+    renderer: L.canvas(),
+    style: f => {
+      const rec = byA3[f.id];
+      return {
+        fillColor: colorFor(rec ? rec.count : 0, maxVal),
+        weight: 0.5,
+        color: '#ffffff',
+        fillOpacity: 0.9
+      };
+    },
+    onEachFeature: (f, lyr) => {
+      const rec   = byA3[f.id];
+      const count = rec ? rec.count : 0;
+      const name  = (rec && rec.name) || (f.properties && f.properties.name) || f.id;
+      lyr.bindTooltip(
+        `<strong>${name}</strong><br>${count} user${count !== 1 ? 's' : ''}`,
+        { sticky: true }
+      );
+      lyr.on('mouseover', () => lyr.setStyle({ fillOpacity: 0.65, weight: 1 }));
+      lyr.on('mouseout',  () => lyr.setStyle({ fillOpacity: 0.9,  weight: 0.5 }));
+    }
+  }).addTo(leafletMap);
 
-  const projection = d3.geoNaturalEarth1()
-    .scale(width / 6.5)
-    .translate([width / 2, height / 2]);
+  leafletMap.fitBounds(layer.getBounds(), { padding: [10, 10] });
 
-  const path = d3.geoPath(projection);
-
-  // load world topology
-  const world = await d3.json(WORLD_URL);
-  const countries = topojson.feature(world, world.objects.countries);
-
-  // build numeric id → alpha2 reverse map
-  const NUM_TO_A2 = {};
-  Object.entries(A2_TO_NUM).forEach(([a2, num]) => { NUM_TO_A2[num] = a2; });
-
-  // draw countries
-  svg.selectAll('.country-path')
-    .data(countries.features)
-    .join('path')
-    .attr('class', 'country-path')
-    .attr('d', path)
-    .attr('fill', d => {
-      const numId = String(d.id).padStart(3, '0');
-      const a2    = NUM_TO_A2[numId];
-      const count = a2 ? (lookup[a2] || 0) : 0;
-      return count > 0 ? colorScale(count) : noDataColor;
-    })
-    .attr('stroke', isDark ? 'rgba(255,255,255,0.2)' : '#fff')
-    .attr('stroke-width', 0.5)
-    .on('mousemove', (event, d) => {
-      const numId   = String(d.id).padStart(3, '0');
-      const a2      = NUM_TO_A2[numId];
-      const count   = a2 ? (lookup[a2] || 0) : 0;
-      const distRow = distribution.find(x => x.country_code === a2);
-      const name    = distRow ? distRow.country_name : (a2 || 'Unknown');
-      tooltip.style.display  = 'block';
-      tooltip.style.left     = (event.clientX + 12) + 'px';
-      tooltip.style.top      = (event.clientY - 28) + 'px';
-      tooltip.innerHTML      = `<strong>${name}</strong><br>${count} user${count !== 1 ? 's' : ''}`;
-    })
-    .on('mouseleave', () => { tooltip.style.display = 'none'; });
-
-  // legend
+  // legend (canvas, already non-SVG)
   const legendBar = document.getElementById('legend-bar');
   legendBar.width  = 200;
   legendBar.height = 12;
   const ctx = legendBar.getContext('2d');
   for (let i = 0; i < 200; i++) {
-    ctx.fillStyle = colorScale(i / 200 * maxVal);
+    ctx.fillStyle = colorFor((i / 200) * maxVal || 0.0001, maxVal);
     ctx.fillRect(i, 0, 1, 12);
   }
   document.getElementById('legend-max').textContent = maxVal;
   document.getElementById('legend').style.display   = 'flex';
 }
 
-// ── draw bar chart ────────────────────────────────────────
+// ── draw bar chart (HTML/CSS divs — no SVG) ──────────────
 function drawBarChart(distribution) {
   document.getElementById('bar-loading').style.display = 'none';
-  const svg = document.getElementById('bar-chart');
-  svg.style.display = 'block';
+  const wrap = document.getElementById('bar-chart');
+  wrap.style.display = 'block';
+  wrap.innerHTML = '';
 
   const top15  = distribution.slice(0, 15);
-  const margin = { top: 10, right: 60, bottom: 10, left: 160 };
-  const width  = 700;
-  const barH   = 32;
-  const height = top15.length * barH + margin.top + margin.bottom;
-
-  svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-
   const maxVal = Math.max(...top15.map(d => d.user_count), 1);
-  const xScale = v => (v / maxVal) * (width - margin.left - margin.right);
 
-  const svgNS = 'http://www.w3.org/2000/svg';
+  top15.forEach(d => {
+    const row = document.createElement('div');
+    row.className = 'bar-row';
 
-  top15.forEach((d, i) => {
-    const y      = margin.top + i * barH;
-    const barW   = xScale(d.user_count);
-    const barY   = y + 6;
-    const barH2  = barH - 12;
+    const name = document.createElement('div');
+    name.className = 'bar-name';
+    name.textContent = d.country_name;
 
-    // country label
-    const label  = document.createElementNS(svgNS, 'text');
-    label.setAttribute('x', margin.left - 8);
-    label.setAttribute('y', barY + barH2 / 2 + 4);
-    label.setAttribute('text-anchor', 'end');
-    label.setAttribute('class', 'bar-label');
-    label.textContent = d.country_name;
-    svg.appendChild(label);
+    const track = document.createElement('div');
+    track.className = 'bar-track';
 
-    // bar
-    const rect = document.createElementNS(svgNS, 'rect');
-    rect.setAttribute('x', margin.left);
-    rect.setAttribute('y', barY);
-    rect.setAttribute('width', barW);
-    rect.setAttribute('height', barH2);
-    rect.setAttribute('fill', '#667eea');
-    rect.setAttribute('rx', 3);
-    svg.appendChild(rect);
+    const fill = document.createElement('div');
+    fill.className = 'bar-fill';
+    fill.style.width = (d.user_count / maxVal * 100) + '%';
 
-    // value label
-    const val = document.createElementNS(svgNS, 'text');
-    val.setAttribute('x', margin.left + barW + 6);
-    val.setAttribute('y', barY + barH2 / 2 + 4);
-    val.setAttribute('class', 'bar-value');
+    const val = document.createElement('div');
+    val.className = 'bar-value';
     val.textContent = d.user_count;
-    svg.appendChild(val);
+
+    track.appendChild(fill);
+    row.appendChild(name);
+    row.appendChild(track);
+    row.appendChild(val);
+    wrap.appendChild(row);
   });
 }
 
@@ -422,13 +269,13 @@ async function init() {
     await drawMap(statsData.distribution);
     drawBarChart(statsData.distribution);
   } catch (e) {
-    document.getElementById('map-loading').textContent  = '❌ Error loading map: ' + e.message;
-    document.getElementById('bar-loading').textContent  = '❌ Error loading chart.';
+    document.getElementById('map-loading').textContent = '❌ Error loading map: ' + e.message;
+    <!-- document.getElementById('bar-loading').textContent = '❌ Error loading chart.'; -->
     console.error(e);
   }
 }
-
 document.addEventListener('DOMContentLoaded', init);
+
 </script>
 </body>
 </html>
